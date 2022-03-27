@@ -1,0 +1,16 @@
+* {
+    font-family: 'Comfortaa', cursive;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(to top, #222, #888);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    color: white;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
