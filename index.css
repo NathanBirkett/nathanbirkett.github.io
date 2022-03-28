@@ -35,9 +35,9 @@ main {
 }
 
 .text {
-    margin-left: 100px;
+    margin-left: 12vw;
     bottom: 0;
-    padding: 2em;
+    padding: 2vh 0;
 }
 
 
@@ -53,13 +53,13 @@ footer p {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 10vw;
     margin: 0;
 }
 
 h2 {
     position: relative;
-    font-size: 1rem;
+    font-size: 2vw;
     margin: 0;
 }
 
