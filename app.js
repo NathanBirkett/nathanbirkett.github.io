@@ -8,26 +8,26 @@ var active = projects;
 var activeID = 0;
 
 function forward() {
-    active.style.width = '160px';
-    active.style.background = 'radial-gradient(#fff calc(1rem - 1px), #888 1rem)';
+    active.style.width = '12vw';
+    active.style.background = 'radial-gradient(#fff calc(1.5vw - 1px), #888 1.5vw)';
     active.children[0].children[0].style.color = 'rgba(255, 255, 255, 0)';
     activeID = (activeID + 1)%selectorArray.length;
     active = selectorArray[activeID];
     active.style.textIndent = 0;
-    active.style.background = 'radial-gradient(#888 calc(1rem - 1px), #888 1rem)';
-    active.style.width = '400px';
+    active.style.background = 'radial-gradient(#888 calc(1.5vw - 1px), #888 1.5vw)';
+    active.style.width = '30vw';
     active.children[0].children[0].style.color = 'rgba(255, 255, 255, 1)';
 }
 
 function back() {
-    active.style.width = '160px';
-    active.style.background = 'radial-gradient(#fff calc(1rem - 1px), #888 1rem)';
+    active.style.width = '12vw';
+    active.style.background = 'radial-gradient(#fff calc(1.5vw - 1px), #888 1.5vw)';
     active.children[0].children[0].style.color = 'rgba(255, 255, 255, 0)';
     activeID = ((activeID - 1)%selectorArray.length + selectorArray.length) % selectorArray.length;
     active = selectorArray[activeID];
     active.style.textIndent = 0;
-    active.style.background = 'radial-gradient(#888 calc(1rem - 1px), #888 1rem)';
-    active.style.width = '400px';
+    active.style.background = 'radial-gradient(#888 calc(1.5vw - 1px), #888 1.5vw)';
+    active.style.width = '30vw';
     active.children[0].children[0].style.color = 'rgba(255, 255, 255, 1)';
 }
 

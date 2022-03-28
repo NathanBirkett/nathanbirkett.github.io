@@ -23,24 +23,21 @@ body::-webkit-scrollbar {
 
 main {
     grid-row: 1;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: auto auto;
+    margin: auto;
+    width: 100vw;
 }
 
 .center {
-    flex-grow: 3;
-    flex-shrink: 2;
-    flex-basis: 350px;
-    display: grid;
-    grid-template-rows: min-content auto;
+    display: flex;
     margin-bottom: calc(100vh / 8);
 }
 
 .text {
-    margin-top: calc(850px / 2 - 80px - 90px - 50px - 2rem);
-    margin-bottom: 2rem;
+    margin-left: 100px;
+    bottom: 0;
+    padding: 2em;
 }
 
 
@@ -61,6 +58,7 @@ h1 {
 }
 
 h2 {
+    position: relative;
     font-size: 1rem;
     margin: 0;
 }
@@ -82,6 +80,7 @@ h2 {
 .arrow > img {
     transition-duration: 0.25s;
     transition-timing-function: ease-in-out;
+    width: 8vw;
 }
 
 .arrow > img:hover {
@@ -89,39 +88,38 @@ h2 {
 }
 
 .selector_container {
-    padding: 50px;
+    padding: 5%;
     margin-top: 0;
     margin-bottom: 0;
     background: #222;
     border-radius: 80px;
     display: grid;
     grid-template-columns: repeat(4, auto);
-    height: 160px;
-    z-index: 1;
 }
 
 .selector_container > div {
-    height: 160px;
-    border-radius: 80px;
+    height: 12vw;
+    border-radius: 6vw;
     flex-shrink: 1;
-    background: radial-gradient(#fff calc(1rem - 1px), #888 1rem);
-    width: 160px;
+    background: radial-gradient(#fff calc(1.5vw - 1px), #888 1.5vw);
+    width: 12vw;
     transition: width 0.5s;
     text-indent: 100%;
 }
 
 .selector_container > div:nth-child(1) {
     background: #888;
-    width: 400px;
+    width: 30vw;
     text-indent: 0%;
     color: white;
 }
 
 h3 {
     text-align: center;
-    padding: 45px 0;
+    /* padding: 45px 0; */
     margin: 0;
-    font-size: 4rem;
+    font-size: 5vw;
+    line-height: 12vw;
     white-space: nowrap;
     overflow: hidden;
 }
