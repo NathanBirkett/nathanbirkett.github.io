@@ -2,6 +2,22 @@
     font-family: 'Comfortaa', cursive;
 }
 
+li:link {
+    text-decoration: none;
+}
+
+li:visited {
+    text-decoration: none;
+}
+
+li:hover {
+    color: #f80;
+}
+
+li:active {
+    color: #08f;
+}
+
 body {
     height: 100vh;
     margin: 0;
@@ -9,8 +25,25 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
     color: white;
+    display: grid;
+    grid-template-rows: auto auto;
 }
 
 body::-webkit-scrollbar {
     display: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    height: 70px;
+    background: #888;
+}
+
+li {
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 0 16px;
+    line-height: 70px;
 }
