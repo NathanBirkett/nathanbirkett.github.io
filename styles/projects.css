@@ -20,14 +20,17 @@ a:active {
 }
 
 body {
-    height: 100vh;
+    /* height: 100vh; */
     margin: 0;
     background: linear-gradient(to top, #222, #888);
     -ms-overflow-style: none;
     scrollbar-width: none;
     color: white;
     display: grid;
-    grid-template-rows: 10vh auto;
+    grid-template-rows: 8vh 92vh auto;
+}
+
+main {
 }
 
 body::-webkit-scrollbar {
@@ -98,4 +101,15 @@ span {
     height: 100%;
     top: 0;
     left: 0;
+}
+
+footer {
+    background-color: #222;
+    grid-row: 3;
+}
+
+footer p {
+    margin: 0;
+    margin-left: calc(100vw / 5);
+    line-height: calc(100vh / 8);
 }
