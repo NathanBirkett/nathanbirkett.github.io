@@ -1,5 +1,6 @@
 * {
     font-family: 'Comfortaa', cursive;
+    color: white;
 }
 
 body {
@@ -8,9 +9,95 @@ body {
     background: linear-gradient(to top, #222, #888);
     -ms-overflow-style: none;
     scrollbar-width: none;
-    color: white;
 }
 
 body::-webkit-scrollbar {
+    display: none;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    color: #f80;
+}
+
+a:active {
+    color: #08f;
+}
+
+header > ul {
+    margin: 0;
+    padding: 0;
+    height: 8vh;
+    background: #888;
+}
+
+header > ul > li {
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 0 16px;
+    line-height: 8vh;
+}
+
+header {
+    padding: 0;
+    margin: 0;
+}
+
+footer {
+    background-color: #222;
+    grid-row: 3;
+}
+
+footer p {
+    margin: 0;
+    margin-left: calc(100vw / 5);
+    line-height: calc(100vh / 8);
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+
+main > div {
+    width: 25vw;
+    margin: 5vw;
+    height: 75vh;
+    background: #222;
+    display: flex;
+    flex-direction: column;
+    border-radius: 2vw;
+}
+
+h1 {
+    float: left;
+    width: 100%;
+    clear: both;
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 0;
+}
+
+.infopane ul {
+    height: 100%;
+    overflow-x: visible;
+    overflow-y: scroll;
+    margin: 5%;
+    font-size: 4vh;
+}
+
+.infopane li {
+    padding: 0.8vh;
+}
+
+.infopane ul::-webkit-scrollbar {
     display: none;
 }
