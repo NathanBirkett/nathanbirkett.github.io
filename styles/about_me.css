@@ -86,18 +86,46 @@ h1 {
     margin-bottom: 0;
 }
 
-.infopane ul {
-    height: 100%;
-    overflow-x: visible;
-    overflow-y: scroll;
-    margin: 5%;
+h2 {
     font-size: 4vh;
+    margin: 0;
+    padding: 0;
+    display: block;
+    user-select: none;
 }
 
-.infopane li {
-    padding: 0.8vh;
+.button {
+    position: relative;
+    height: 10vh;
 }
 
-.infopane ul::-webkit-scrollbar {
+input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+p {
     display: none;
+}
+
+input:checked + h2 + p{
+    display: inline;
+}
+
+.list {
+    margin: 0 2vw;
+    overflow-y: scroll;
+}
+
+.list::-webkit-scrollbar {
+    display: none;
+}
+
+.button_container {
+    background: #888;
+    border-radius: 1vh;
+    padding: 1vh 1vw;
+    margin: 1vh;
 }
