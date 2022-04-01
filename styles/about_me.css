@@ -108,6 +108,8 @@ input {
 
 p {
     display: none;
+    opacity: 0;
+    transition: all 0.5s;
 }
 
 input:checked + h2 + p{
@@ -128,4 +130,9 @@ input:checked + h2 + p{
     border-radius: 1vh;
     padding: 1vh 1vw;
     margin: 1vh;
+}
+
+.button_container:hover p {
+    display: inline;
+    opacity: 1;
 }
