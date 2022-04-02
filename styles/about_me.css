@@ -54,6 +54,7 @@ header {
 footer {
     background-color: #222;
     grid-row: 3;
+    height: calc(100vh / 8);
 }
 
 footer p {
@@ -64,12 +65,12 @@ footer p {
 
 main {
     display: flex;
-    justify-content: center;
+    height: 92vh;
 }
 
-main > div {
+.infopane {
     width: 25vw;
-    margin: 5vw;
+    margin: 5vh 5vw;
     height: 75vh;
     background: #222;
     display: flex;
@@ -94,28 +95,12 @@ h2 {
     user-select: none;
 }
 
-.button {
-    position: relative;
-    height: 10vh;
-}
-
-input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-p {
+.item p {
     opacity: 0;
     transition: all 0.5s;
     overflow: hidden;
     max-height: 0;
     margin: 0;
-}
-
-input:checked + h2 + p{
-    display: inline;
 }
 
 .list {
@@ -127,14 +112,14 @@ input:checked + h2 + p{
     display: none;
 }
 
-.button_container {
+.item {
     background: #888;
     border-radius: 1vh;
     padding: 1vh 1vw;
     margin: 1vh;
 }
 
-.button_container:hover p {
+.item:hover p {
     position: relative;
     opacity: 1;
     transition: all 0.25s cubic-bezier(1.5, 1, 1.5, 0);
