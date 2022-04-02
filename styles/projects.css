@@ -29,9 +29,6 @@ body {
     grid-template-rows: 8vh auto auto;
 }
 
-main {
-}
-
 body::-webkit-scrollbar {
     display: none;
 }

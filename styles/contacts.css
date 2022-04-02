@@ -1,16 +1,117 @@
 * {
     font-family: 'Comfortaa', cursive;
+    color: white;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    color: #f80;
+}
+
+a:active {
+    color: #08f;
 }
 
 body {
-    height: 100vh;
     margin: 0;
     background: linear-gradient(to top, #222, #888);
     -ms-overflow-style: none;
     scrollbar-width: none;
     color: white;
+    display: grid;
+    grid-template-rows: 8vh auto auto;
+    height: 100vh;
 }
 
 body::-webkit-scrollbar {
     display: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    height: 8vh;
+    background: #888;
+}
+
+li {
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 0 16px;
+    line-height: 8vh;
+}
+
+header {
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    height: 92vh;
+}
+
+footer {
+    background-color: #222;
+}
+
+footer p {
+    margin: 0;
+    margin-left: calc(100vw / 5);
+    line-height: calc(100vh / 8);
+}
+
+.contact_container {
+    display: grid;
+    grid-template-columns: 40vh 40vh;
+    grid-template-rows: 40vh 40vh;
+    margin: 2vh 5vw;
+}
+
+.contact {
+    background: #222;
+    width: 36vh;
+    height: 36vh;
+    padding: 2vh;
+    border-radius: 10vh;
+    background-clip: content-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+img {
+    max-width: 36vh;
+    max-height: 36vh;
+    width: auto;
+    height: 24vh;
+    margin: 0 2vh;
+    margin-bottom: 1vh;
+    object-fit: contain;
+}
+
+span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+h1 {
+    margin: 0;
+    text-align: center;
+    font-size:large;
 }
