@@ -1,5 +1,6 @@
 * {
     font-family: 'Comfortaa', cursive;
+    color: white;
 }
 
 body {
@@ -73,8 +74,6 @@ h2 {
     background-color: transparent;
     border: none;
     padding: 0;
-    flex-grow: 1;
-    flex-shrink: 1;
 }
 
 .arrow > img {
@@ -89,44 +88,53 @@ h2 {
 
 .selector_container {
     padding: 5%;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 0;
     background: #222;
     border-radius: 80px;
-    display: grid;
-    grid-template-columns: repeat(4, auto);
+    display: flex;
+    flex-direction: row;
+}
+
+.dot {
+    background: white;
+    width: 3vw;
+    height: 3vw;
+    position: absolute;
+    margin: calc(6vw - 1.5vw);
+    border-radius: 1.5vw;
+    transition: 0.5s;
 }
 
 .selector_container > div {
     height: 12vw;
     border-radius: 6vw;
-    flex-shrink: 1;
-    background: radial-gradient(#fff calc(1.5vw - 1px), #888 1.5vw);
+    background: #888;
     width: 12vw;
     transition: width 0.5s;
     text-indent: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.selector_container > div:nth-child(1) {
-    background: #888;
+.selector_container > div:hover {
     width: 30vw;
+    background: #888;
     text-indent: 0%;
     color: white;
 }
 
+.selector_container > div:hover > .dot {
+    opacity: 0;
+    transition: step-start 0.5s;
+}
+
 h3 {
     text-align: center;
-    /* padding: 45px 0; */
     margin: 0;
     font-size: 5vw;
     line-height: 12vw;
     white-space: nowrap;
     overflow: hidden;
-}
-
-a {
-    color: white;
-    transition: 0.25s;
 }
 
 a:link {
