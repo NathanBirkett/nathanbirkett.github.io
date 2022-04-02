@@ -107,9 +107,11 @@ input {
 }
 
 p {
-    display: none;
     opacity: 0;
     transition: all 0.5s;
+    overflow: hidden;
+    max-height: 0;
+    margin: 0;
 }
 
 input:checked + h2 + p{
@@ -133,6 +135,8 @@ input:checked + h2 + p{
 }
 
 .button_container:hover p {
-    display: inline;
+    position: relative;
     opacity: 1;
+    transition: all 0.25s cubic-bezier(1.5, 1, 1.5, 0);
+    max-height: 128px;
 }
