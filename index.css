@@ -7,7 +7,7 @@ body {
     display: grid;
     height: 100vh;
     width: 100vw;
-    background: linear-gradient(to top, #222, #888);
+    background: linear-gradient(to top, #B3641B, #40D8FF);
     background-position-y: top;
     grid-template-rows: calc(100vh - 100vh / 8) calc(100vh / 8);
     margin: 0;
@@ -43,7 +43,7 @@ main {
 
 
 footer {
-    background-color: #222;
+    background-color: #B3641B;
     grid-row: 2;
 }
 
@@ -89,7 +89,7 @@ h2 {
 .selector_container {
     padding: 5%;
     margin: 0;
-    background: #222;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
     border-radius: 80px;
     display: flex;
     flex-direction: row;
@@ -108,7 +108,7 @@ h2 {
 .selector_container > div {
     height: 12vw;
     border-radius: 6vw;
-    background: #888;
+    background: linear-gradient(to right, #FF9C40, #40D8FF);
     width: 12vw;
     transition: width 0.5s;
     text-indent: 100%;
@@ -118,7 +118,6 @@ h2 {
 
 .selector_container > div:hover {
     width: 30vw;
-    background: #888;
     text-indent: 0%;
     color: white;
 }
@@ -146,9 +145,6 @@ a:visited {
 }
 
 a:hover {
-    color: #f80;
-}
-
-a:active {
-    color: #08f;
+    color: #FFA959;
+    transition: 0.25s;
 }

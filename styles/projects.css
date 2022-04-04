@@ -21,7 +21,7 @@ a:active {
 
 body {
     margin: 0;
-    background: linear-gradient(to top, #222, #888);
+    background: linear-gradient(to top, #B3641B, #40D8FF);
     -ms-overflow-style: none;
     scrollbar-width: none;
     color: white;
@@ -37,7 +37,7 @@ ul {
     margin: 0;
     padding: 0;
     height: 8vh;
-    background: #888;
+    background: #40D8FF;
 }
 
 li {
@@ -61,7 +61,7 @@ header {
 
 .project_pane {
     position: relative;
-    background: #222;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
     padding: 1vh;
     margin: 2vh;
     display: flex;
@@ -105,7 +105,7 @@ span {
 }
 
 footer {
-    background-color: #222;
+    background-color: #B3641B;
     grid-row: 3;
 }
 
