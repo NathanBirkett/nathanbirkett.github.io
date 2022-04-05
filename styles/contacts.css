@@ -85,7 +85,11 @@ footer p {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+}
+
+.contact:hover {
+    transform: scale(1.1);
+    transition: 0.1s;
 }
 
 img {
