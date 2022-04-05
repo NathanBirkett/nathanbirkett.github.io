@@ -23,11 +23,8 @@ a:visited {
 }
 
 a:hover {
-    color: #f80;
-}
-
-a:active {
-    color: #08f;
+    color: #FFA959;
+    transition: 0.25s;
 }
 
 header > ul {
@@ -65,6 +62,7 @@ footer p {
 main {
     display: flex;
     height: 92vh;
+    align-items: center;
 }
 
 .infopane {

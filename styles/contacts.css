@@ -70,10 +70,11 @@ footer p {
 }
 
 .contact_container {
-    display: grid;
-    grid-template-columns: 40vh 40vh;
-    grid-template-rows: 40vh 40vh;
-    margin: 2vh 5vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
 }
 
 .contact {

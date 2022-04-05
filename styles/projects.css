@@ -12,11 +12,8 @@ a:visited {
 }
 
 a:hover {
-    color: #f80;
-}
-
-a:active {
-    color: #08f;
+    color: #FFA959;
+    transition: 0.25s;
 }
 
 body {
@@ -55,8 +52,8 @@ header {
 
 .projects {
     margin: 0 5vw;
-    display: grid;
-    grid-template-rows: auto auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .project_pane {
