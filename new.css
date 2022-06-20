@@ -1,0 +1,290 @@
+* {
+    font-family: 'Comfortaa', cursive;
+    color: white;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    color: #FFA959;
+    transition: 0.25s;
+}
+
+body {
+    background: linear-gradient(to top, #B3641B, #40D8FF);
+    display: grid;
+    margin: 0;
+    row-gap: 5vh;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+h1 {
+    font-size: 5vw;
+    margin: 0;
+    align-self: center;
+}
+
+.main {
+    display: grid;
+}
+
+.main .text {
+    margin: auto;
+    margin-top: 5vh;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    border-radius: 40px;
+    padding: 2%;
+}
+
+.main h1 {
+    font-size: 10vw;
+    margin: 0;
+}
+
+.main h2 {
+    position: relative;
+    font-size: 2vw;
+    margin: 0;
+}
+
+.main h3 {
+    text-align: center;
+    margin: 0;
+    font-size: 5vw;
+    line-height: 12vw;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.main .center {
+    display: flex;
+    margin: auto;
+    height: 30vh;
+}
+
+.main .selector_container {
+    padding: 40px;
+    margin: 0;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    border-radius: 80px;
+    display: flex;
+    flex-direction: row;
+}
+
+.main .selector_container > div {
+    height: 12vw;
+    border-radius: 6vw;
+    background: linear-gradient(to right, #FF9C40, #40D8FF);
+    width: 12vw;
+    transition: width 0.5s;
+    text-indent: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.main .selector_container > div:hover {
+    width: 30vw;
+    text-indent: 0%;
+    color: white;
+}
+
+.main .dot {
+    background: white;
+    width: 3vw;
+    height: 3vw;
+    position: absolute;
+    margin: calc(6vw - 1.5vw);
+    border-radius: 1.5vw;
+    transition: 0.5s;
+}
+
+.main .selector_container > div:hover > .dot {
+    opacity: 0;
+    transition: step-start 0.5s;
+}
+
+.projects {
+    display: flex;
+    flex-direction: column;
+}
+
+.projects .project_container {
+    margin: 0 5vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.projects h2 {
+    margin: 1vw;
+    font-size: 3em;
+}
+
+.projects p {
+    margin: 1vw;
+    font-size: 1.5em;
+}
+
+.projects span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.projects img {
+    height: 25vh;
+    border-radius: 5vh;
+}
+
+.projects .project_pane {
+    position: relative;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    padding: 1vh;
+    margin: 2vh;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 5vh;
+    transition: 0.1s;
+}
+
+.projects .project_pane:hover {
+    transform: scale(1.05);
+    transition: 0.1s;
+}
+
+.aboutme {
+    display: flex;
+    flex-direction: column;
+}
+
+.aboutme .infopane_container {
+    display: flex;
+    align-items: center;
+}
+
+.aboutme h2 {
+    float: left;
+    width: 100%;
+    clear: both;
+    text-align: center;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+}
+
+.aboutme h3 {
+    font-size: 4vh;
+    margin: 0;
+    padding: 0;
+    display: block;
+    user-select: none;
+}
+
+.aboutme p {
+    opacity: 0;
+    transition: all 0.5s;
+    overflow: hidden;
+    max-height: 0;
+    margin: 0;
+}
+
+.aboutme .item:hover p {
+    position: relative;
+    opacity: 1;
+    transition: all 0.25s cubic-bezier(1.5, 1, 1.5, 0);
+    max-height: 128px;
+}
+
+.aboutme .infopane {
+    width: 25vw;
+    margin: 5vh auto;
+    height: 75vh;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    display: flex;
+    flex-direction: column;
+    border-radius: 2vw;
+}
+
+.aboutme .list {
+    margin: 0 2vw;
+    overflow-y: scroll;
+}
+
+.aboutme .list::-webkit-scrollbar {
+    display: none;
+}
+
+.aboutme .item {
+    background: linear-gradient(to right, #FF9C40, #40D8FF);
+    border-radius: 1vh;
+    padding: 1vh 1vw;
+    margin: 1vh;
+}
+
+.contacts {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.contacts h2 {
+    margin: 0;
+    text-align: center;
+    font-size: large;
+}
+
+.contacts .contact_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+.contacts .contact {
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    width: 36vh;
+    height: 36vh;
+    padding: 2vh;
+    border-radius: 10vh;
+    background-clip: content-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contacts .contact:hover {
+    transform: scale(1.1);
+    transition: 0.1s;
+}
+
+.contacts span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.contacts img {
+    max-width: 36vh;
+    max-height: 36vh;
+    width: auto;
+    height: 24vh;
+    margin: 0 2vh;
+    margin-bottom: 1vh;
+    object-fit: contain;
+}

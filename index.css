@@ -5,15 +5,13 @@
 
 body {
     display: grid;
-    height: 100vh;
     width: 100vw;
+    height: 500vh;
     background: linear-gradient(to top, #B3641B, #40D8FF);
     background-position-y: top;
-    grid-template-rows: calc(100vh - 100vh / 8) calc(100vh / 8);
+    grid-template-rows: 10vh, auto, auto, auto, auto;
     margin: 0;
-    margin-top: calc(100vh / 8);
     margin-bottom: 0;
-    color: white;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -25,9 +23,22 @@ body::-webkit-scrollbar {
 main {
     grid-row: 1;
     display: grid;
-    grid-template-rows: auto auto;
+    /* grid-template-rows: auto auto; */
     margin: auto;
-    width: 100vw;
+    /* width: 100vw; */
+    vertical-align: top;
+}
+
+body>.projects {
+    grid-row: 2;
+}
+
+.aboutme {
+    grid-row: 3;
+}
+
+.contacts {
+    grid-row: 4;
 }
 
 .center {
@@ -147,4 +158,124 @@ a:visited {
 a:hover {
     color: #FFA959;
     transition: 0.25s;
+}
+
+/* projects */
+
+* {
+    font-family: 'Comfortaa', cursive;
+    color: white;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    color: #FFA959;
+    transition: 0.25s;
+}
+
+.projects body {
+    margin: 0;
+    background: linear-gradient(to top, #B3641B, #40D8FF);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    color: white;
+    display: grid;
+    grid-template-rows: 8vh auto auto;
+}
+
+.projects body::-webkit-scrollbar {
+    display: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    height: 8vh;
+    background: #40D8FF;
+}
+
+li {
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 0 16px;
+    line-height: 8vh;
+}
+
+header {
+    padding: 0;
+    margin: 0;
+}
+
+.projects {
+    margin: 0 5vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.projects .project_pane {
+    position: relative;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    padding: 1vh;
+    margin: 2vh;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 5vh;
+    transition: 0.1s;
+}
+
+.projects .project_pane:hover {
+    transform: scale(1.05);
+    transition: 0.1s;
+}
+
+.projects .picture {
+    height: 25vh;
+    border-radius: 5vh;
+}
+
+.projects p {
+    margin: 1vw;
+    font-size: 1.5em;
+}
+
+.projects h1 {
+    margin: 1vw;
+    font-size: 3em;
+}
+
+.projects input {
+    display: none;
+}
+
+.projects span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+footer {
+    background-color: #B3641B;
+    grid-row: 3;
+}
+
+footer p {
+    margin: 0;
+    margin-left: calc(100vw / 5);
+    line-height: calc(100vh / 8);
+}
+
+.arrow {
+    display: none;
 }
