@@ -31,12 +31,12 @@ body::-webkit-scrollbar {
 }
 
 .text {
-    height: 20vh;
+    height: calc(5em + 10vw);
     position: relative;
 }
 
 .text h1 {
-    font-size: 5vw;
+    font-size: 5em;
     margin: 0;
     position: absolute;
     text-align: center;
@@ -60,7 +60,7 @@ body::-webkit-scrollbar {
 .header li {
     padding: 16px;
     display: inline-block;
-    font-size: 2vw;
+    font-size: 2em;
 }
 
 .main {
@@ -69,76 +69,21 @@ body::-webkit-scrollbar {
 
 .main .words {
     margin: auto;
-    margin-top: 5vh;
+    margin-top: 3vh;
     background: linear-gradient(to top left, #0990B3, #FF9C40);
     border-radius: 40px;
     padding: 2%;
+    text-align: center;
 }
 
 .main h1 {
-    font-size: 10vw;
+    font-size: 10em;
     margin: 0;
 }
 
 .main h2 {
-    font-size: 2vw;
+    font-size: 2em;
     margin: 0;
-}
-
-.main h3 {
-    text-align: center;
-    margin: 0;
-    font-size: 5vw;
-    line-height: 12vw;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.main .center {
-    display: flex;
-    margin: auto;
-    height: 30vh;
-}
-
-.main .selector_container {
-    padding: 40px;
-    margin: 0;
-    background: linear-gradient(to top left, #0990B3, #FF9C40);
-    border-radius: 80px;
-    display: flex;
-    flex-direction: row;
-}
-
-.main .selector_container > div {
-    height: 12vw;
-    border-radius: 6vw;
-    background: linear-gradient(to right, #FF9C40, #40D8FF);
-    width: 12vw;
-    transition: width 0.5s;
-    text-indent: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.main .selector_container > div:hover {
-    width: 30vw;
-    text-indent: 0%;
-    color: white;
-}
-
-.main .dot {
-    background: white;
-    width: 3vw;
-    height: 3vw;
-    position: absolute;
-    margin: calc(6vw - 1.5vw);
-    border-radius: 1.5vw;
-    transition: 0.5s;
-}
-
-.main .selector_container > div:hover > .dot {
-    opacity: 0;
-    transition: step-start 0.5s;
 }
 
 .projects {
@@ -149,7 +94,7 @@ body::-webkit-scrollbar {
 .projects .project_container {
     display: flex;
     flex-direction: column;
-    margin: 5vh 5vw 0 5vw;
+    margin: 2vw 5vw 0 5vw;
 }
 
 .projects h2 {
@@ -201,6 +146,7 @@ body::-webkit-scrollbar {
 .aboutme .infopane_container {
     display: flex;
     align-items: center;
+    margin-top: 2vw;
 }
 
 .aboutme h2 {
@@ -237,7 +183,7 @@ body::-webkit-scrollbar {
 
 .aboutme .infopane {
     width: 25vw;
-    margin: 5vh auto;
+    margin: 0 auto;
     height: 75vh;
     background: linear-gradient(to top left, #0990B3, #FF9C40);
     display: flex;
@@ -279,7 +225,7 @@ body::-webkit-scrollbar {
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
-    margin: 5vh 0 0 0;
+    margin-top: 2vw;
 }
 
 .contacts .contact {
@@ -317,4 +263,58 @@ body::-webkit-scrollbar {
     margin: 0 2vh;
     margin-bottom: 1vh;
     object-fit: contain;
+}
+
+@media only screen and (max-width: 1000px) {
+    .aboutme .infopane_container {
+        display: inline;
+    }
+
+    .aboutme .infopane {
+        margin: 5vw auto;
+        width: 75%;
+        border-radius: 2vh;
+        height: auto;
+    }
+
+    .projects p {
+        display: none;
+    }
+
+    .projects .project_pane {
+        flex-direction: column;
+        width: 75%;
+        align-self: center;
+    }
+    
+    .projects img {
+        width: 100%;
+        height: auto;
+    }
+
+    .projects h2 {
+        font-size: 10vw;
+        text-align: center;
+    }
+
+    .main h1 {
+        font-size: 18vw;
+    }
+    
+    .main h2 {
+        font-size: 4vw;
+    }
+
+    .main .words {
+        width: 75%;
+        border-radius: 5vh;
+    }
+
+    .text h1 {
+        font-size: 10vw;
+    }
+
+    .header li {
+        font-size: 4vw;
+    }
 }
