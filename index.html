@@ -13,93 +13,21 @@
     <link rel="icon" href="/images/logo.png">
 </head>
 <body>
+    <div class="header">
+        <ul>
+            <li><a href="#aboutme">About me</a></li>
+            <li><a href="#contacts">Contacts</a></li>
+            <li><a href="#projects">Projects</a></li>
+        </ul>
+    </div>
     <div class="main">
-        <div class="text">
+        <div class="words">
             <h1>Nathan</h1>
             <h2>Technology hobbyist based in Ithaca, NY</h2>
         </div>
-        <!-- <div class="center">
-            <div class="selector_container">
-                <div id="projects">
-                    <h3><a href="pages/projects.html">Projects</a></h3>
-                    <div class="dot"></div>
-                </div>
-                <div id="about_me">
-                    <h3><a href="pages/about_me.html">About me</a></h3>
-                    <div class="dot"></div>
-                </div>
-                <div id="contact">
-                    <h3><a href="pages/contacts.html">Contacts</a></h3>
-                    <div class="dot"></div>
-                </div>
-                <div id="resume">
-                    <h3><a href="pages/resume.html">Resume</a></h3>
-                    <div class="dot"></div>
-                </div>
-            </div>
-        </div> -->
     </div>
-    <div class="projects">
-        <h1>Projects</h1>
-        <div class="project_container">
-            <div class="project_pane">
-                <a href="https://www.team639.org/" target="_blank"><span></span></a>
-                <h2>THE<br>RED<br>ZEPPLIN</h2>
-                <img src="/images/robot.png" alt="code red" class="picture">
-                <p>
-                    Code Red Robotics is Ithaca High School's local FRC team. 
-                    The goal is to create a robot entirely from scratch in 6 weeks that competes in a competition in a predesigned game setting. 
-                    I mostly worked on the programming and strategy subteams. 
-                    For programming, I mostly worked on the indexer subsystem, which organizes the cargo that is taken in from acquisiton, and prepares it to be shot out of the launcher. 
-                    This project gave me practice with command based programming, using github, and working in a team.
-                </p>
-            </div>
-            <div class="project_pane">
-                <a href="https://github.com/NathanBirkett/chemicle.git" target="_blank"><span></span></a>
-                <h2>CHEMICLE</h2>
-                <img src="/images/wordle.png" alt="chemicle" class="picture">
-                <p>
-                    Chemicle is a variation of the popular word guessing game Wordle. In Wordle, players guess a word and they are told if the letters are contained in that word.
-                    In Chemicle, players try to guess a valid ionic compound in only 6 lines. 
-                    This project is coded entirely in java and gave me valuable practice with polymorphism and java swing.
-                </p>
-            </div>
-            <div class="project_pane">
-                <a href="https://github.com/NathanBirkett/Grapher.git" target="_blank"><span></span></a>
-                <h2>GRAPHER</h2>
-                <img src="/images/grapher.jpg" alt="grapher" class="picture">
-                <p>
-                    Grapher is a graphing program made with java.
-                    It can plot lines, parabolas, and points, and it can find the linear line of best fit, and intersections between 2 equations.
-                    This project was one of my first projects with java, so most of it is spaghetti code, but it gave me lots of practice with user input and using math with programming.
-                </p>
-            </div>
-            <div class="project_pane">
-                <a href="https://github.com/NathanBirkett/Plylist" target="_blank"><span></span></a>
-                <h2>PLYLIST</h2>
-                <img src="/images/plylist.png" alt="grapher" class="picture">
-                <p>
-                    Plylist is a music playing python program. You can add and edit playlists, combine them and play them.
-                    But, what's special about this program is that when you start a playlist, it shuffles it so that if you listen to the whole playlist, each song will have played for the same total amount of time.
-                    This gave me some experience with python, as it was my first major project with the language.
-                    It also gave me experience with working with json files and file management.
-                </p>
-            </div>
-            <div class="project_pane">
-                <a href="https://github.com/NathanBirkett/marching-pythons" target="_blank"><span></span></a>
-                <h2>MARCHING PYTHONS</h2>
-                <img src="/images/marching pythons.png" alt="marching pythons" class="picture">
-                <p>
-                    This is similar to my Grapher program, but different. It uses the marching squares algorithm to generate the graph, which makes it much more accurate and more efficient.
-                    It also means that it can draw any equation, not just linear or quadratic ones like Grapher.
-                    But, this program can't do things like linear regression or points of intersection like Grapher.
-                    This gave me experience with implementing algorithms, and using pygame.
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="aboutme">
-        <h1>About Me</h1>
+    <div class="aboutme" id="aboutme">
+        <div class="text"><h1>About Me</h1></div>
         <div class="infopane_container">
             <div class="infopane">
                 <h2>Skills</h2>
@@ -226,8 +154,8 @@
             </div>
         </div>
     </div>
-    <div class="contacts">
-        <h1>Contacts</h1>
+    <div class="contacts", id="contacts">
+        <div class="text"><h1>Contacts</h1></div>
         <div class="contact_container">
             <div class="contact">
                 <a href="https://github.com/NathanBirkett" target="_blank"><span></span></a>
@@ -247,6 +175,65 @@
                 <a href="https://www.youtube.com/channel/UC6trCNiL34vfOinayzAO0FA" target="_blank"><span></span></a>
                 <img src="/images/youtube.png" alt="youtube">
                 <h2>PrinterdPaper</h2>
+            </div>
+        </div>
+    </div>
+    <div class="projects", id="projects">
+        <div class="text"><h1>Projects</h1></div>
+        <div class="project_container">
+            <div class="project_pane">
+                <a href="https://www.team639.org/" target="_blank"><span></span></a>
+                <h2>THE<br>RED<br>ZEPPLIN</h2>
+                <img src="/images/robot.png" alt="code red" class="picture">
+                <p>
+                    Code Red Robotics is Ithaca High School's local FRC team. 
+                    The goal is to create a robot entirely from scratch in 6 weeks that competes in a competition in a predesigned game setting. 
+                    I mostly worked on the programming and strategy subteams. 
+                    For programming, I mostly worked on the indexer subsystem, which organizes the cargo that is taken in from acquisiton, and prepares it to be shot out of the launcher. 
+                    This project gave me practice with command based programming, using github, and working in a team.
+                </p>
+            </div>
+            <div class="project_pane">
+                <a href="https://github.com/NathanBirkett/Plylist" target="_blank"><span></span></a>
+                <h2>PLYLIST</h2>
+                <img src="/images/plylist.png" alt="grapher" class="picture">
+                <p>
+                    Plylist is a music playing python program. You can add and edit playlists, combine them and play them.
+                    But, what's special about this program is that when you start a playlist, it shuffles it so that if you listen to the whole playlist, each song will have played for the same total amount of time.
+                    This gave me some experience with python, as it was my first major project with the language.
+                    It also gave me experience with working with json files and file management.
+                </p>
+            </div>
+            <div class="project_pane">
+                <a href="https://github.com/NathanBirkett/chemicle.git" target="_blank"><span></span></a>
+                <h2>CHEMICLE</h2>
+                <img src="/images/wordle.png" alt="chemicle" class="picture">
+                <p>
+                    Chemicle is a variation of the popular word guessing game Wordle. In Wordle, players guess a word and they are told if the letters are contained in that word.
+                    In Chemicle, players try to guess a valid ionic compound in only 6 lines. 
+                    This project is coded entirely in java and gave me valuable practice with polymorphism and java swing.
+                </p>
+            </div>
+            <div class="project_pane">
+                <a href="https://github.com/NathanBirkett/marching-pythons" target="_blank"><span></span></a>
+                <h2>MARCHING PYTHONS</h2>
+                <img src="/images/marching pythons.png" alt="marching pythons" class="picture">
+                <p>
+                    This is similar to my Grapher program, but different. It uses the marching squares algorithm to generate the graph, which makes it much more accurate and more efficient.
+                    It also means that it can draw any equation, not just linear or quadratic ones like Grapher.
+                    But, this program can't do things like linear regression or points of intersection like Grapher.
+                    This gave me experience with implementing algorithms, and using pygame.
+                </p>
+            </div>
+            <div class="project_pane">
+                <a href="https://github.com/NathanBirkett/Grapher.git" target="_blank"><span></span></a>
+                <h2>GRAPHER</h2>
+                <img src="/images/grapher.jpg" alt="grapher" class="picture">
+                <p>
+                    Grapher is a graphing program made with java.
+                    It can plot lines, parabolas, and points, and it can find the linear line of best fit, and intersections between 2 equations.
+                    This project was one of my first projects with java, so most of it is spaghetti code, but it gave me lots of practice with user input and using math with programming.
+                </p>
             </div>
         </div>
     </div>
