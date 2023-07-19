@@ -1,54 +1,19 @@
-class Expression extends createjs.Container {
-    constructor(stage) {
-        super()
-
-        this.on("mousedown", e => {
-            this.clickX = e.stageX - this.x
-            this.clickY = e.stageY - this.y
-            stage.setChildIndex(this, stage.numChildren - 1)
-        })
-
-        this.on('pressmove', function(e) {
-            var detector = new createjs.Shape()
-            detector.setBounds(this.x, this.y + 25, 50, 50)
-            // console.log(this.children[0])
-            var det = getObjectsInBounds(stage, detector).filter(i => i instanceof Input && this.children[0] != i)
-            if (det.length > 0) {
-                var detected = det[0]
-                console.log(detected.parent)
-                this.x = detected.parent.x
-                this.y = detected.parent.y - 75
-            } else {
-                this.x = e.stageX - this.clickX;
-                this.y = e.stageY - this.clickY;
-            }
-            stage.update();
-        })
-
-        var color = unusedColors.shift()
-        var func = new Function(stage, null, color);
-        stage.usedColors.push(color)
-
-        this.tree = new TreeNode(color)
-        console.log(this.tree)
-
-        this.addChild(func)
-    }
-
-
-}
-
 function getItemsUnderPoint(stage, x, y, obj = undefined) {
     return [... new Set((stage.getObjectsUnderPoint(x, y)).map(function(value){return value.parent}))]
     .filter(function(item){return item != obj})
 }
 
-function getObjectsInBounds(stage, boxObj) {
+function getObjectsInBounds(stage, boxObj, highestLevel) {
+    if (highestLevel == null) highestLevel = false
     var box = boxObj.getBounds()
     var objects = []
+    function r(obj) {
+        if (obj.parent == stage) return obj
+        return r(obj.parent)
+    }
     for (let i = box.x; i < box.x + box.width; i += 10) {
         for (let j = box.y; j < box.y + box.height; j += 10) {
-            var under = [...new Set(stage.getObjectsUnderPoint(i, j).filter(k => k != boxObj).map(k => k.parent))].filter(k => k != boxObj)
+            var under = [...new Set(stage.getObjectsUnderPoint(i, j).filter(k => k != boxObj && k != stage).map(k => {return highestLevel ? r(k) : k.parent}))].filter(k => k != boxObj)
             if (under.length > 0) {
                 objects = objects.concat(under)
             }
@@ -60,6 +25,9 @@ function getObjectsInBounds(stage, boxObj) {
 var stage
 
 function init() {
+
+    
+
     var canvas = document.getElementById("canvas")
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -67,7 +35,7 @@ function init() {
     stage.usedColors = []
 
     var addLambda = new Button("add lambda", () => {
-        var expression = new Expression(stage)
+        var expression = new Expression(stage, unusedColors.shift())
         stage.addChild(expression)
         expression.x = window.innerWidth / 2;
         expression.y = window.innerHeight / 2;
@@ -84,11 +52,55 @@ function init() {
     addCombinator.x = 100
     stage.addChild(addCombinator)
 
+    var betaReduce = new Button("\u03b2-reduce", () => {
+        var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
+        postOrder(expr.tree, node => {if (node.data == "app") {
+            var variable = node.right.left
+            postOrder(node.right.right, n => {
+                if (n.data == variable) {
+                    n.data = node.left.data
+                }
+            })
+            expr.tree = node.right.right
+        }
+        })
+        tree = expr.tree
+        stage.removeChild(expr)
+        console.log(tree)
+        function parseTree(tree, newExpr) {//TODO this function needs to do recursion properly
+            // newExpr = new Expression(stage, )
+            inOrder(tree, node => {
+                console.log(node)
+                if (node.data == "abs") {
+                    newExpr = new Expression(stage, node.left.data)
+                    var func = newExpr.children[0]
+                    func.onNewInput()
+                    console.log(node.right.data)
+                    func.input.onDoubleClick(node.right.data) 
+                } else if (node.data == "app") {
+
+                } else {
+                    newExpr = new Expression(stage, node.data)
+                    console.log(newExpr)
+                }
+            })
+            console.log(newExpr.tree)
+            stage.addChild(newExpr)
+            newExpr.x = window.innerWidth / 2;
+            newExpr.y = window.innerHeight / 2;
+        }
+        var newExpr
+        parseTree(tree, newExpr)
+        stage.update()
+    })
+    betaReduce.x = 200
+    stage.addChild(betaReduce)
+
     var trash = new Button("trash", () => {
         stage.removeChild(getObjectsInBounds(stage, stage.getChildByName("selectbox"))[0].parent)
         stage.update()
     })
-    trash.x = 200
+    trash.x = 300
     stage.addChild(trash)
 
     stage.on("stagemousedown", (e) => {
