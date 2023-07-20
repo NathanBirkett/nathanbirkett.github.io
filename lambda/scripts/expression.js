@@ -29,9 +29,8 @@ class Expression extends createjs.Container {
                         if (children[i].constructor.name != "Output")children[i].coord.unshift("l")
                     }
                     var tRightX = structuredClone(rightmostFunction.x)
-                    console.log(rightX)
-                    console.log(tRightX + 25)
                     detected.parent.children.forEach(e => {
+                        console.log(e)
                         if (!e.newAdded && e.constructor.name != "Output") e.coord.unshift("r")
                         if (e.x >= tRightX || e.newAdded) {
                             // console.log(rightX)

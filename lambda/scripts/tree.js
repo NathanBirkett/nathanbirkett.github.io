@@ -33,12 +33,13 @@ function postOrder(node, func) {
     if (node == null) return
     postOrder(node.left, func)
     postOrder(node.right, func)
-    if (func(node)) console.log("return")
+    return func(node)
 }
 
 function inOrder(node, func) {
     if (node == null) return
-    func(node)
     inOrder(node.left, func)
+    var r = func(node)
     inOrder(node.right, func)
+    return r
 }

@@ -29,29 +29,26 @@ class Input extends createjs.Container {
         // this.addChild(newInput)
     }
 
-    onDoubleClick(newColor) {
+    onDoubleClick(newColor, myColor) {
         if (this.polyFillCommand.style == "lightblue") {
             if (!(["abs", "app"].includes(this.parent.tree.data))) {
                 this.color = this.func.color
                 this.coord = []
                 this.isParameter = true
                 this.parent.tree = new TreeNode("abs", new TreeNode(this.color), this.parent.tree, this)
-                console.log(newColor)
                 this.func.onNewOutput((newColor == null) ? this.color : newColor)
             } else {
-                this.color = unusedColors.shift()
-                stage.usedColors.push(this.color)
+                if (myColor == null) {
+                    this.color = unusedColors.shift()
+                    stage.usedColors.push(this.color)
+                } else this.color = myColor
                 this.isParameter = true
                 this.coord = this.func.coord
-                console.log(this.coord)
                 this.parent.tree.setCoord(this.coord, new TreeNode("abs", new TreeNode(this.color), this.parent.tree.getCoord(this.coord), this))
-                console.log(this.parent.tree)
-                this.func.onNewOutput(this.func.color)
-                console.log(this.parent.tree.getCoord(this.coord.slice(0, -1)).obj)
+                this.func.onNewOutput((newColor == null) ? this.func.color : newColor)
                 this.parent.tree.getCoord(this.coord.slice(0, -1)).obj.output.addLength(12.5)
             }
             this.polyFillCommand.style = this.color
-            console.log(this.parent.tree)
         } else {
             unusedColors.unshift(this.polyFillCommand.style)
             this.parent.usedColors.splice(this.parent.usedColors.indexOf(this.polyFillCommand.style), 1)

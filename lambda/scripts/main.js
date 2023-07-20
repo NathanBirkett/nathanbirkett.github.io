@@ -22,33 +22,52 @@ function getObjectsInBounds(stage, boxObj, highestLevel) {
     return [...new Set(objects)]
 }
 
+function parseHelper(tree) {
+    var expr
+    if (!["abs", "app"].includes(tree.data)){
+        expr = new Expression(stage, tree.data)
+    } else if (tree.data == "abs") {
+        expr = new Expression(stage, tree.left.data)
+        var func = expr.children[0]
+        func.onNewInput() 
+        func.input.onDoubleClick(tree.left.data, tree.left.data)
+        parseTree(expr.tree.right.obj, tree.right)
+    }
+    return expr
+}
 
-function parseTree(tree) {//TODO this function needs to do recursion properly
-    console.log(tree)
-    var newExpr
-    postOrder(tree, node => {
-        if (!["abs", "app"].includes(node.data)) {
-            newExpr = new Expression(stage, node.data)
-            return true //AHHH this still needs to recurse properly
-        } else if (node.data == "abs") {
-            var expr = new Expression(stage, node.left.data)
-            var func = expr.children[0]
-            func.onNewInput()
-            func.input.onDoubleClick(node.left.data)
-        }
-        // if (node.data == "abs") {
-        //     newExpr = new Expression(stage, node.left.data)
-        //     var func = newExpr.children[0]
-        //     func.onNewInput()
-        //     func.input.onDoubleClick(node.right.data) 
-        // } else if (node.data == "app") {
 
-        // } else {
-        //     newExpr = new Expression(stage, node.data)
-        //     console.log(newExpr)
-        // }
-    })
-    return newExpr
+function parseTree(currObj, tree) {//TODO this function needs to do recursion properly
+    if (tree == null) return tree
+    else if (tree.data == "abs") {
+        currObj.onNewInput()
+        currObj.input.onDoubleClick(tree.left.data, tree.left.data)
+        parseTree(currObj.input.parent.tree.getCoord(currObj.coord).right.obj, tree.right)
+    } else if (tree.data == "app") {
+
+    } else {
+        currObj.setColor(tree.data)
+    }
+
+    // if (tree == null) return
+    // else if (!["abs", "app"].includes(tree.data)) {
+    //     return new Expression(stage, tree.data)
+    // } else if (tree.data == "abs") {
+    //     var expr = new Expression(stage, tree.left.data)
+    //     var func = expr.children[0]
+    //     func.onNewInput()
+    //     var c = tree.right.data
+    //     if (tree.right.data == "abs") c = tree.right.left.data //yeah still doesn't work at all
+    //     func.input.onDoubleClick(c)
+    //     console.log(expr)
+    //     if (tree.right.data == "abs") {
+    //         expr.tree.right.obj.onNewInput()
+    //         console.log(tree)
+    //         expr.tree.right.obj.input.onDoubleClick(tree.right.right.data, tree.right.left.data)
+    //     }
+    //     return expr
+    // }
+    // return f
 }
 
 var stage
@@ -117,7 +136,7 @@ function init() {
     var parse = new Button("parse", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
         stage.removeChild(expr)
-        var newExpr = parseTree(expr.tree)
+        var newExpr = parseHelper(expr.tree)
         console.log(newExpr)
         stage.addChild(newExpr)
         newExpr.x = window.innerWidth / 2;

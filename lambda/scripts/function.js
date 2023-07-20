@@ -3,7 +3,6 @@ class Function extends createjs.Container {
         super()
         this.color = color
         this.coord = coord
-        console.log(coord)
 
         var rectColorIndex = 0
         var rect = new createjs.Shape()
@@ -12,7 +11,8 @@ class Function extends createjs.Container {
         rect.on("dblclick", () => {
             rectColorIndex = (rectColorIndex + 1) % stage.usedColors.length
             this.rectFillCommand.style = stage.usedColors[rectColorIndex]
-            color = stage.usedColors[rectColorIndex]
+            this.color = stage.usedColors[rectColorIndex]
+            this.parent.tree.getCoord(this.coord).data = this.color
             stage.update()
         })
         this.addChild(rect)
@@ -38,17 +38,18 @@ class Function extends createjs.Container {
 
     onNewOutput(color) {
         var func = new Function(stage, (this.coord.length == 0) ? ["r"] : [...this.coord, "r"], color)
-            func.y = this.y
-            func.x = this.x + 50 + 25
-            console.log(func)
-            this.parent.addChild(func)
-            this.removeChild(this.newOutput)
-            var output = new Output(this.x, this.y, this.input != null && this.input.isParameter)
-            this.parent.addChild(output)
-            this.input.output = output
-            this.output = output
-            if (this.input != null && this.input.isParameter) this.parent.removeChild(this)
-            stage.update()
+        this.parent.tree.getCoord(this.coord).right.obj = func
+        func.y = this.y
+        func.x = this.x + 50 + 25
+        console.log(func)
+        this.parent.addChild(func)
+        this.removeChild(this.newOutput)
+        var output = new Output(this.x, this.y, this.input != null && this.input.isParameter)
+        this.parent.addChild(output)
+        this.input.output = output
+        this.output = output
+        if (this.input != null && this.input.isParameter) this.parent.removeChild(this)
+        stage.update()
     }
 
     onNewInput() {

@@ -5,7 +5,6 @@ class Output extends createjs.Container {
         this.y = y
         if (length == null) length = 25
         this.length = length
-        console.log(this.length)
 
         // if (isParameter) {
         //     var down = new createjs.Shape()
