@@ -16,35 +16,31 @@ class Expression extends createjs.Container {
                 detector.setBounds(this.x + rightmostFunction.x, this.y + rightmostFunction.y + 25, 50, 50)
                 var det = getObjectsInBounds(stage, detector).filter(i => i instanceof Input && this.children[0] != i)
                 if (det.length > 0) {
-                    console.log("next")
                     var detected = det[0]
                     detected.parent.tree = new TreeNode("app", this.tree, detected.parent.tree)
                     const rightX = structuredClone(rightmostFunction.x)
                     const children = [...this.children]
                     for (var i = 0; i < children.length; i++) {
-                        console.log(children)
                         this.removeChild(children[i])
-                        console.log(children[i])
                         detected.parent.addChild(children[i])
                         children[i].newAdded = true
                         children[i].x += detected.x - rightX
                         children[i].y += detected.y - 75
-                        if (children[i].parentNode == null) {
-                            children[i].parentNode = detected.parent.tree
-                        }
+                        if (children[i].constructor.name != "Output")children[i].coord.unshift("l")
                     }
                     detected.parent.children.forEach(e => {
+                        if (!e.newAdded && e.constructor.name != "Output") e.coord.unshift("r")
                         if (e.x >= rightX || e.newAdded) {
-                            console.log(rightX)
+                            // console.log(rightX)
                             e.x += rightX
-                            if (e.constructor.name == "Output") {
-                                console.log(e)
-                                // e.setLength(100)
-                            }
                             e.newAdded = false
                         }
                     })
-                    console.log(detected.parent.tree)
+                    console.log(detected.parent.tree.getCoord(detected.coord.slice(0, -1)).obj)
+                    var output = detected.parent.tree.getCoord(detected.coord.slice(0, -1)).obj.output
+                    console.log(rightX)
+                    output.setLength(output.length + rightX + 62.5)
+                    console.log(detected.parent.tree.left.obj)
                 } else {
                     this.x = e.stageX - this.clickX;
                     this.y = e.stageY - this.clickY;
@@ -53,8 +49,8 @@ class Expression extends createjs.Container {
         }
         })
 
-        this.tree = new TreeNode(color)
-        var func = new Function(stage, null, color);
+        var func = new Function(stage, [], color);
+        this.tree = new TreeNode(color, null, null, func)
         stage.usedColors.push(color)
         this.addChild(func)
     }

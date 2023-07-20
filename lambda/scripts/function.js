@@ -1,15 +1,15 @@
 class Function extends createjs.Container {
-    constructor(stage, parentNode, color) {
+    constructor(stage, coord, color) {
         super()
         this.color = color
-        this.parentNode = parentNode
+        this.coord = coord
+        console.log(coord)
 
         var rectColorIndex = 0
         var rect = new createjs.Shape()
         this.rectFillCommand = rect.graphics.beginFill(color).command
         rect.graphics.drawRect(0, 0, 50, 50)
         rect.on("dblclick", () => {
-            console.log(stage.usedColors)
             rectColorIndex = (rectColorIndex + 1) % stage.usedColors.length
             this.rectFillCommand.style = stage.usedColors[rectColorIndex]
             color = stage.usedColors[rectColorIndex]
@@ -37,13 +37,16 @@ class Function extends createjs.Container {
     }
 
     onNewOutput(color) {
-        var func = new Function(stage, (this.parentNode == null) ? this.parent.tree : this.parent.tree.right, color)
+        var func = new Function(stage, (this.coord.length == 0) ? ["r"] : [...this.coord, "r"], color)
             func.y = this.y
             func.x = this.x + 50 + 25
             console.log(func)
             this.parent.addChild(func)
             this.removeChild(this.newOutput)
-            this.parent.addChild(new Output(this.x, this.y, this.input != null && this.input.isParameter))
+            var output = new Output(this.x, this.y, this.input != null && this.input.isParameter)
+            this.parent.addChild(output)
+            this.input.output = output
+            this.output = output
             if (this.input != null && this.input.isParameter) this.parent.removeChild(this)
             stage.update()
     }

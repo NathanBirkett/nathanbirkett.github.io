@@ -3,8 +3,9 @@ class Output extends createjs.Container {
         super()
         this.x = x
         this.y = y
-        this.length = length
         if (length == null) length = 25
+        this.length = length
+        console.log(this.length)
 
         // if (isParameter) {
         //     var down = new createjs.Shape()
@@ -34,17 +35,20 @@ class Output extends createjs.Container {
 
             var across = new createjs.Shape()
             across.graphics.beginFill("lightblue")
-            this.acrossFillCommand = across.graphics.drawRect(12.5, 12.5, 37.5 + length, 25).command
+            this.acrossFillCommand = across.graphics.drawRect(12.5, 12.5, 37.5 + this.length, 25).command
             this.addChild(across)
         } else {
             var across = new createjs.Shape()
             across.graphics.beginFill("lightblue")
-            this.acrossFillCommand = across.graphics.drawRect(50, 12.5, length, 25).command
+            this.acrossFillCommand = across.graphics.drawRect(50, 12.5, this.length, 25).command
             this.addChild(across)
         }
     }
 
     setLength(length) {
-        console.log(this.acrossFillCommand.w = length)
+        console.log(length)
+        this.length = length
+        this.acrossFillCommand.w = length
+        console.log(this.acrossFillCommand)
     }
 }

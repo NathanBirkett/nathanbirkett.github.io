@@ -1,9 +1,9 @@
 class Input extends createjs.Container {
-    constructor(func, x, y, color, parentNode) {
+    constructor(func, x, y, color, coord) {
         super()
         this.color = color
         this.func = func
-        this.parentNode = parentNode
+        this.coord = coord
 
         var polygon = new createjs.Shape()
         var polyFillCommand = polygon.graphics.beginFill(color).command
@@ -33,17 +33,19 @@ class Input extends createjs.Container {
         if (this.polyFillCommand.style == "lightblue") {
             if (!(["abs", "app"].includes(this.parent.tree.data))) {
                 this.color = this.func.color
+                this.coord = []
                 this.isParameter = true
-                this.parent.tree = new TreeNode("abs", new TreeNode(this.color), this.parent.tree)
+                this.parent.tree = new TreeNode("abs", new TreeNode(this.color), this.parent.tree, this)
                 console.log(newColor)
                 this.func.onNewOutput((newColor == null) ? this.color : newColor)
             } else {
                 this.color = unusedColors.shift()
                 stage.usedColors.push(this.color)
                 this.isParameter = true
-                this.parentNode = this.func.parentNode
-                console.log(this.parentNode)
-                this.parentNode.right = new TreeNode("abs", new TreeNode(this.color), this.parentNode.right)
+                this.coord = this.func.coord
+                console.log(this.coord)
+                this.parent.tree.setCoord(this.coord, new TreeNode("abs", new TreeNode(this.color), this.parent.tree.getCoord(this.coord)), this)
+                console.log(this.parent.tree)
                 this.func.onNewOutput(this.func.color)
             }
             this.polyFillCommand.style = this.color
