@@ -28,9 +28,12 @@ class Expression extends createjs.Container {
                         children[i].y += detected.y - 75
                         if (children[i].constructor.name != "Output")children[i].coord.unshift("l")
                     }
+                    var tRightX = structuredClone(rightmostFunction.x)
+                    console.log(rightX)
+                    console.log(tRightX + 25)
                     detected.parent.children.forEach(e => {
                         if (!e.newAdded && e.constructor.name != "Output") e.coord.unshift("r")
-                        if (e.x >= rightX || e.newAdded) {
+                        if (e.x >= tRightX || e.newAdded) {
                             // console.log(rightX)
                             e.x += rightX
                             e.newAdded = false
@@ -39,7 +42,7 @@ class Expression extends createjs.Container {
                     console.log(detected.parent.tree.getCoord(detected.coord.slice(0, -1)).obj)
                     var output = detected.parent.tree.getCoord(detected.coord.slice(0, -1)).obj.output
                     console.log(rightX)
-                    output.setLength(output.length + rightX + 62.5)
+                    output.addLength(rightX)
                     console.log(detected.parent.tree.left.obj)
                 } else {
                     this.x = e.stageX - this.clickX;

@@ -22,6 +22,35 @@ function getObjectsInBounds(stage, boxObj, highestLevel) {
     return [...new Set(objects)]
 }
 
+
+function parseTree(tree) {//TODO this function needs to do recursion properly
+    console.log(tree)
+    var newExpr
+    postOrder(tree, node => {
+        if (!["abs", "app"].includes(node.data)) {
+            newExpr = new Expression(stage, node.data)
+            return true //AHHH this still needs to recurse properly
+        } else if (node.data == "abs") {
+            var expr = new Expression(stage, node.left.data)
+            var func = expr.children[0]
+            func.onNewInput()
+            func.input.onDoubleClick(node.left.data)
+        }
+        // if (node.data == "abs") {
+        //     newExpr = new Expression(stage, node.left.data)
+        //     var func = newExpr.children[0]
+        //     func.onNewInput()
+        //     func.input.onDoubleClick(node.right.data) 
+        // } else if (node.data == "app") {
+
+        // } else {
+        //     newExpr = new Expression(stage, node.data)
+        //     console.log(newExpr)
+        // }
+    })
+    return newExpr
+}
+
 var stage
 
 function init() {
@@ -55,7 +84,7 @@ function init() {
     var betaReduce = new Button("\u03b2-reduce", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
         postOrder(expr.tree, node => {if (node.data == "app") {
-            var variable = node.right.left
+            var variable = node.right.left.data
             postOrder(node.right.right, n => {
                 if (n.data == variable) {
                     n.data = node.left.data
@@ -67,30 +96,12 @@ function init() {
         tree = expr.tree
         stage.removeChild(expr)
         console.log(tree)
-        function parseTree(tree, newExpr) {//TODO this function needs to do recursion properly
-            // newExpr = new Expression(stage, )
-            inOrder(tree, node => {
-                console.log(node)
-                if (node.data == "abs") {
-                    newExpr = new Expression(stage, node.left.data)
-                    var func = newExpr.children[0]
-                    func.onNewInput()
-                    console.log(node.right.data)
-                    func.input.onDoubleClick(node.right.data) 
-                } else if (node.data == "app") {
+        var newExpr = parseTree(tree, newExpr)
+        console.log(newExpr.tree)
+        stage.addChild(newExpr)
+        newExpr.x = window.innerWidth / 2;
+        newExpr.y = window.innerHeight / 2;
 
-                } else {
-                    newExpr = new Expression(stage, node.data)
-                    console.log(newExpr)
-                }
-            })
-            console.log(newExpr.tree)
-            stage.addChild(newExpr)
-            newExpr.x = window.innerWidth / 2;
-            newExpr.y = window.innerHeight / 2;
-        }
-        var newExpr
-        parseTree(tree, newExpr)
         stage.update()
     })
     betaReduce.x = 200
@@ -102,6 +113,20 @@ function init() {
     })
     trash.x = 300
     stage.addChild(trash)
+
+    var parse = new Button("parse", () => {
+        var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
+        stage.removeChild(expr)
+        var newExpr = parseTree(expr.tree)
+        console.log(newExpr)
+        stage.addChild(newExpr)
+        newExpr.x = window.innerWidth / 2;
+        newExpr.y = window.innerHeight / 2;
+
+        stage.update()
+    })
+    parse.x = 400
+    stage.addChild(parse)
 
     stage.on("stagemousedown", (e) => {
         stage.pressed = true

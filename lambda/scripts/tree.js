@@ -13,8 +13,8 @@ class TreeNode {
             else if (coord[i - 1] == "l") parent = parent.left
         }
         var last = coord[coord.length - 1]
-        if (last == "r") this.right = node
-        else if (last == "l") this.left = node
+        if (last == "r") parent.right = node
+        else if (last == "l") parent.left = node
     }
 
     getCoord(coord) {
@@ -33,7 +33,7 @@ function postOrder(node, func) {
     if (node == null) return
     postOrder(node.left, func)
     postOrder(node.right, func)
-    func(node)
+    if (func(node)) console.log("return")
 }
 
 function inOrder(node, func) {

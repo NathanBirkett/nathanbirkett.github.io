@@ -51,4 +51,9 @@ class Output extends createjs.Container {
         this.acrossFillCommand.w = length
         console.log(this.acrossFillCommand)
     }
+
+    addLength(length) {
+        this.length = length
+        this.acrossFillCommand.w += length
+    }
 }

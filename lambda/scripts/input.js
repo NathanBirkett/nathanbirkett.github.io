@@ -44,9 +44,11 @@ class Input extends createjs.Container {
                 this.isParameter = true
                 this.coord = this.func.coord
                 console.log(this.coord)
-                this.parent.tree.setCoord(this.coord, new TreeNode("abs", new TreeNode(this.color), this.parent.tree.getCoord(this.coord)), this)
+                this.parent.tree.setCoord(this.coord, new TreeNode("abs", new TreeNode(this.color), this.parent.tree.getCoord(this.coord), this))
                 console.log(this.parent.tree)
                 this.func.onNewOutput(this.func.color)
+                console.log(this.parent.tree.getCoord(this.coord.slice(0, -1)).obj)
+                this.parent.tree.getCoord(this.coord.slice(0, -1)).obj.output.addLength(12.5)
             }
             this.polyFillCommand.style = this.color
             console.log(this.parent.tree)
