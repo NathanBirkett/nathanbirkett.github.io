@@ -7,6 +7,12 @@ class TreeNode {
     }
     
     setCoord(coord, node) {
+        if (coord.length == 0) {
+            this.data = node.data
+            this.left = node.left
+            this.right = node.right
+            this.obj = this.obj
+        }
         var parent = this
         for (var i = 1; i < coord.length; i++) {
             if (coord[i - 1] == "r") parent = parent.right
@@ -18,7 +24,8 @@ class TreeNode {
     }
 
     getCoord(coord) {
-        console.log(coord)
+        // console.log(this)
+        // console.log(coord)
         var parent = this
         for (var i = 0; i < coord.length; i++) {
             if (coord[i] == "r") parent = parent.right

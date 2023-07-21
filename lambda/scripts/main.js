@@ -22,7 +22,24 @@ function getObjectsInBounds(stage, boxObj, highestLevel) {
     return [...new Set(objects)]
 }
 
-function parseHelper(tree) {
+
+function add(exp) {
+    stage.addChild(exp)
+    exp.x = window.innerWidth / 2;
+    exp.y = window.innerHeight / 2;
+    stage.update()
+}
+
+function helperHelper(tree) {
+    var expr = parseHelper(tree)
+    if (tree.data == "app") {
+        expr.rightmostFunction.onNewOutput("lightblue")
+    }
+    return expr
+}
+
+function parseHelper(tree) { //perhaps include callback
+    console.log(tree)
     var expr
     if (!["abs", "app"].includes(tree.data)){
         expr = new Expression(stage, tree.data)
@@ -32,12 +49,31 @@ function parseHelper(tree) {
         func.onNewInput() 
         func.input.onDoubleClick(tree.left.data, tree.left.data)
         parseTree(expr.tree.right.obj, tree.right)
+    } else if (tree.data == "app") {
+        var left = parseHelper(tree.left)
+        console.log(left.tree)
+        var right = parseHelper(tree.right)
+        console.log(right.tree)
+        if (right.tree.data != "abs" && right.tree.data != "app") {
+            right.children[0].onNewInput()
+        }
+        console.log(right)
+        var applier
+        if (right.tree.data == "abs") applier = right.tree.obj
+        if (right.tree.data == "app") {
+            applier = right.tree.obj
+            right.rightmostFunction.onNewOutput("lightblue") //maybe better way to find new output
+            right.rightmostFunction.onNewInput()
+            applier = right.rightmostFunction.input
+        }
+        else applier = right.tree.obj.input
+        expr = left.applyTo(applier)
     }
     return expr
 }
 
 
-function parseTree(currObj, tree) {//TODO this function needs to do recursion properly
+function parseTree(currObj, tree) {
     if (tree == null) return tree
     else if (tree.data == "abs") {
         currObj.onNewInput()
@@ -48,26 +84,6 @@ function parseTree(currObj, tree) {//TODO this function needs to do recursion pr
     } else {
         currObj.setColor(tree.data)
     }
-
-    // if (tree == null) return
-    // else if (!["abs", "app"].includes(tree.data)) {
-    //     return new Expression(stage, tree.data)
-    // } else if (tree.data == "abs") {
-    //     var expr = new Expression(stage, tree.left.data)
-    //     var func = expr.children[0]
-    //     func.onNewInput()
-    //     var c = tree.right.data
-    //     if (tree.right.data == "abs") c = tree.right.left.data //yeah still doesn't work at all
-    //     func.input.onDoubleClick(c)
-    //     console.log(expr)
-    //     if (tree.right.data == "abs") {
-    //         expr.tree.right.obj.onNewInput()
-    //         console.log(tree)
-    //         expr.tree.right.obj.input.onDoubleClick(tree.right.right.data, tree.right.left.data)
-    //     }
-    //     return expr
-    // }
-    // return f
 }
 
 var stage
@@ -102,20 +118,21 @@ function init() {
 
     var betaReduce = new Button("\u03b2-reduce", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
-        postOrder(expr.tree, node => {if (node.data == "app") {
+        postOrder(expr.tree, node => {if (node.data == "app" && node.right.data == "abs") {
             var variable = node.right.left.data
             postOrder(node.right.right, n => {
                 if (n.data == variable) {
-                    n.data = node.left.data
+                    n.data = node.left.data // what if the input is a bigger expression
                 }
             })
             expr.tree = node.right.right
         }
         })
-        tree = expr.tree
         stage.removeChild(expr)
+        // tree = new TreeNode("app", new TreeNode("yellow"), new TreeNode("red"))
+        tree = expr.tree
         console.log(tree)
-        var newExpr = parseTree(tree, newExpr)
+        var newExpr = helperHelper(tree)
         console.log(newExpr.tree)
         stage.addChild(newExpr)
         newExpr.x = window.innerWidth / 2;
@@ -136,7 +153,7 @@ function init() {
     var parse = new Button("parse", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
         stage.removeChild(expr)
-        var newExpr = parseHelper(expr.tree)
+        var newExpr = helperHelper(expr.tree)
         console.log(newExpr)
         stage.addChild(newExpr)
         newExpr.x = window.innerWidth / 2;
@@ -146,6 +163,12 @@ function init() {
     })
     parse.x = 400
     stage.addChild(parse)
+
+    var print = new Button("print", () => {
+        console.log(getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0])
+    })
+    print.x = 500
+    stage.addChild(print)
 
     stage.on("stagemousedown", (e) => {
         stage.pressed = true

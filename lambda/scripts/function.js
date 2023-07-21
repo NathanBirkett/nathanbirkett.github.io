@@ -38,16 +38,20 @@ class Function extends createjs.Container {
 
     onNewOutput(color) {
         var func = new Function(stage, (this.coord.length == 0) ? ["r"] : [...this.coord, "r"], color)
-        this.parent.tree.getCoord(this.coord).right.obj = func
+        // console.log(this.parent.tree)
+        if (this.input.isParameter) this.parent.tree.getCoord(this.coord).right.obj = func
+        // else //ok what do i do with light blue squares
+        if (color == "lightblue") func.coord = [...this.coord]
         func.y = this.y
         func.x = this.x + 50 + 25
-        console.log(func)
+        // console.log(func)
         this.parent.addChild(func)
         this.removeChild(this.newOutput)
         var output = new Output(this.x, this.y, this.input != null && this.input.isParameter)
         this.parent.addChild(output)
         this.input.output = output
         this.output = output
+        this.parent.rightmostFunction = this.parent.children.reduce((p, c) => {return p.x > c.x ? p : c})
         if (this.input != null && this.input.isParameter) this.parent.removeChild(this)
         stage.update()
     }
@@ -55,23 +59,6 @@ class Function extends createjs.Container {
     onNewInput() {
         this.input = new Input(this, this.x, this.y, "lightblue")
         this.parent.addChildAt(this.input, 0)
-        
-        // var ths = this
-        // function r(t) {
-        //     if (t.right == null) {
-        //         return new TreeNode("abs", new TreeNode(ths.color), t)
-        //     }
-        //     return new TreeNode(t.data, t.left, r(t.right))
-        // }
-        // this.parent.tree = r(this.parent.tree)
-        // console.log(this.treeNode(this.parent.tree))
-
-        // this.parent.addChild(new Output(stage, this.x, this.y, this.input != null))
-        // var func = new Function(stage, null, this.color)
-        // func.y = this.y
-        // func.x = this.x + 50 + 25
-        // this.parent.addChild(func)
-        // this.parent.removeChild(this)
         stage.update()
     }
 }
