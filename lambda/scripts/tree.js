@@ -35,12 +35,18 @@ class TreeNode {
     }
 }
 
-
 function postOrder(node, func) {
-    if (node == null) return
-    postOrder(node.left, func)
-    postOrder(node.right, func)
-    return func(node)
+    var run = new Boolean(true)
+    postHelper(node, func, run)
+}
+
+function postHelper(node, func, run) {
+    if (node == null || run.valueOf() == false) return
+    if (postHelper(node.left, func, run) === false) run = false
+    if (postHelper(node.right, func, run) === false) run = false
+    var res = func(node)
+    if (res === false) run = false
+    return res
 }
 
 function inOrder(node, func) {

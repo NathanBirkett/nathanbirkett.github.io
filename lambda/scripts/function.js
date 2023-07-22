@@ -33,13 +33,17 @@ class Function extends createjs.Container {
     }
 
     setColor(color) {
+        this.color = color
         this.rectFillCommand.style = color
+        this.parent.tree.getCoord(this.coord).data = color
     }
 
     onNewOutput(color) {
+        var isParameter = false
+        if (this.input != null) isParameter = this.input.isParameter
         var func = new Function(stage, (this.coord.length == 0) ? ["r"] : [...this.coord, "r"], color)
         // console.log(this.parent.tree)
-        if (this.input.isParameter) this.parent.tree.getCoord(this.coord).right.obj = func
+        if (isParameter) this.parent.tree.getCoord(this.coord).right.obj = func
         // else //ok what do i do with light blue squares
         if (color == "lightblue") func.coord = [...this.coord]
         func.y = this.y
@@ -47,12 +51,12 @@ class Function extends createjs.Container {
         // console.log(func)
         this.parent.addChild(func)
         this.removeChild(this.newOutput)
-        var output = new Output(this.x, this.y, this.input != null && this.input.isParameter)
+        var output = new Output(this.x, this.y, this.input != null && isParameter)
         this.parent.addChild(output)
-        this.input.output = output
+        if (this.input != null) this.input.output = output
         this.output = output
         this.parent.rightmostFunction = this.parent.children.reduce((p, c) => {return p.x > c.x ? p : c})
-        if (this.input != null && this.input.isParameter) this.parent.removeChild(this)
+        if (this.input != null && isParameter) this.parent.removeChild(this)
         stage.update()
     }
 
