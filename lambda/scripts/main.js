@@ -49,10 +49,13 @@ function parseHelper(tree) { //perhaps include callback
         var func = expr.children[0]
         func.onNewInput() 
         func.input.onDoubleClick(tree.left.data, tree.left.data)
+        // add(expr)
         parseTree(expr.tree.right.obj, tree.right)
     } else if (tree.data == "app") {
         var left = parseHelper(tree.left)
+        // add(left)
         var right = parseHelper(tree.right)
+        // add(right)
         if (right.tree.data != "abs" && right.tree.data != "app") {
             right.children[0].onNewInput()
         }
@@ -65,17 +68,18 @@ function parseHelper(tree) { //perhaps include callback
                 right.rightmostFunction.onNewInput()
                 applier = right.rightmostFunction.input
             } else {
-                var coord = []
+                var coord = ["r"]
                 while (true) {
-                    if (!["abs", "app"].includes(right.tree.getCoord(coord).data)) break
+                    if (!["abs"].includes(right.tree.getCoord(coord).data)) break
                     coord = [...coord, "r"]
                 }
                 applier = right.tree.getCoord(coord.slice(0, -1)).obj
             }
         }
         else applier = right.tree.obj.input
-        // console.log(applier)
+        console.log(applier)
         expr = left.applyTo(applier)
+        // add(expr)
     }
     return expr
 }
@@ -89,7 +93,7 @@ function parseTree(currObj, tree) {
         parseTree(currObj.input.parent.tree.getCoord(currObj.coord).right.obj, tree.right)
     } else if (tree.data == "app") {
         currObj.setColor(tree.right.data)
-        currObj.onNewInput() //tree.right isn't used??
+        currObj.onNewInput() // tree.right isn't used??
         var left = parseHelper(tree.left)
         left.applyTo(currObj.input)
     } else {
@@ -131,10 +135,11 @@ function init() {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
         // console.log(expr.tree)
         postOrder(expr.tree, node => {if (node.data == "app" && node.right.data == "abs") {
-            // console.log("next")
+            console.log("next")
             var variable = node.right.left.data
-            postOrder(node.right.right, n => {
+            postHelper(node.right.right, n => {
                 if (n.data == variable) {
+                    console.log(n)
                     n.obj.parent.tree.setCoord(n.obj.coord, node.left) // for some reason this is not visiting the left node
                 }
             })
@@ -142,6 +147,7 @@ function init() {
             // console.log(node.right.right)
             node.right.obj.parent.tree.setCoord(node.right.obj.coord.slice(0, -1), node.right.right)
             expr.tree = node.right.obj.parent.tree
+            console.log("falsing")
             return false
         }
         })

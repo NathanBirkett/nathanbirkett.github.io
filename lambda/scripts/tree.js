@@ -35,17 +35,22 @@ class TreeNode {
     }
 }
 
+var run = true
 function postOrder(node, func) {
-    var run = new Boolean(true)
-    postHelper(node, func, run)
+    run = true
+    console.log("run")
+    postHelper(node, func)
 }
 
-function postHelper(node, func, run) {
-    if (node == null || run.valueOf() == false) return
-    if (postHelper(node.left, func, run) === false) run = false
-    if (postHelper(node.right, func, run) === false) run = false
+function postHelper(node, func) {
+    console.log(run)
+    if (run === false) return 
+    if (node == null) return
+    postHelper(node.left, func)
+    postHelper(node.right, func)
     var res = func(node)
     if (res === false) run = false
+    console.log(run)
     return res
 }
 
