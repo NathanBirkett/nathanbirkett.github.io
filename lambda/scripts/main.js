@@ -133,27 +133,25 @@ function init() {
 
     var betaReduce = new Button("\u03b2-reduce", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
-        // console.log(expr.tree)
+        console.log(expr.tree)
         postOrder(expr.tree, node => {if (node.data == "app" && node.right.data == "abs") {
-            console.log("next")
             var variable = node.right.left.data
             postHelper(node.right.right, n => {
                 if (n.data == variable) {
-                    console.log(n)
                     n.obj.parent.tree.setCoord(n.obj.coord, node.left) // for some reason this is not visiting the left node
                 }
             })
             // console.log(node.right.obj.coord.slice(0, -1))
             // console.log(node.right.right)
             node.right.obj.parent.tree.setCoord(node.right.obj.coord.slice(0, -1), node.right.right)
-            expr.tree = node.right.obj.parent.tree
+            // expr.tree = node.right.obj.parent.tree
             console.log("falsing")
             return false
         }
         })
         stage.removeChild(expr)
-        // tree = new TreeNode("app", new TreeNode("yellow"), new TreeNode("red"))
         tree = expr.tree
+        console.log(tree)
         var newExpr = helperHelper(tree)
         console.log(newExpr.tree)
         stage.addChild(newExpr)

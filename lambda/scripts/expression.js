@@ -89,9 +89,9 @@ class Expression extends createjs.Container {
                 e.newAdded = false
             }
         })
-        if (applier.parent.tree.getCoord(applier.coord.slice(0, -1)).obj != null) {
+        if (applier.parent.tree.getCoord(applier.coord.slice(0, -1)).data == "abs") {
             var output = applier.parent.tree.getCoord(applier.coord.slice(0, -1)).obj.output
-            // output.addLength(rightX)
+            output.addLength(rightX)
         }
         // console.log(applier.parent.tree.left.obj)
         return applier.parent

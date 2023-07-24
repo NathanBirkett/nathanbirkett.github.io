@@ -38,19 +38,16 @@ class TreeNode {
 var run = true
 function postOrder(node, func) {
     run = true
-    console.log("run")
     postHelper(node, func)
 }
 
 function postHelper(node, func) {
-    console.log(run)
     if (run === false) return 
     if (node == null) return
     postHelper(node.left, func)
     postHelper(node.right, func)
     var res = func(node)
     if (res === false) run = false
-    console.log(run)
     return res
 }
 
