@@ -3,6 +3,10 @@ function getItemsUnderPoint(stage, x, y, obj = undefined) {
     .filter(function(item){return item != obj})
 }
 
+function log(e) {
+    console.log({...e})
+}
+
 function getObjectsInBounds(stage, boxObj, highestLevel) {
     if (highestLevel == null) highestLevel = false
     var box = boxObj.getBounds()
@@ -42,8 +46,14 @@ function helperHelper(tree) {
 function parseHelper(tree) { //perhaps include callback
     // console.log(tree)
     var expr
-    if (!["abs", "app"].includes(tree.data)){
-        expr = new Expression(stage, tree.data)
+    if (!["abs", "app"].includes(tree.data)) {
+        var obj = null
+        if (tree.obj instanceof Combinator) {
+            tree.obj.y = 0
+            tree.obj.x = 0
+            obj = tree.obj
+        }
+        expr = new Expression(stage, tree.data, obj)
     } else if (tree.data == "abs") {
         expr = new Expression(stage, tree.left.data)
         var func = expr.children[0]
@@ -84,14 +94,13 @@ function parseHelper(tree) { //perhaps include callback
     return expr
 }
 
-
 function parseTree(currObj, tree) {
     if (tree == null) return tree
     else if (tree.data == "abs") {
         currObj.onNewInput()
         currObj.input.onDoubleClick(tree.left.data, tree.left.data)
         parseTree(currObj.input.parent.tree.getCoord(currObj.coord).right.obj, tree.right)
-    } else if (tree.data == "app") {
+    } else if (tree.data == "app") { //FIX THIS
         currObj.setColor(tree.right.data)
         currObj.onNewInput() // tree.right isn't used??
         var left = parseHelper(tree.left)
@@ -102,11 +111,12 @@ function parseTree(currObj, tree) {
 }
 
 var stage
+var keyListening
+var combinatorName
+var combinatorInputs
+var numCombinators = 0
 
 function init() {
-
-    
-
     var canvas = document.getElementById("canvas")
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -123,9 +133,7 @@ function init() {
     stage.addChild(addLambda)
 
     var addCombinator = new Button("add combinator", () => {
-        var boxObj = stage.getChildByName("selectbox")
-        // console.log(getObjectsInBounds(stage, boxObj))
-        stage.addChild(new Combinator(stage, "Combinator", getObjectsInBounds(stage, stage.getChildByName("selectbox"))[0].parent.usedColors.length - 1))
+        keyListening = true
         stage.update()
     })
     addCombinator.x = 100
@@ -133,19 +141,17 @@ function init() {
 
     var betaReduce = new Button("\u03b2-reduce", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
-        console.log(expr.tree)
+        console.log(expr.tree.copy())
         postOrder(expr.tree, node => {if (node.data == "app" && node.right.data == "abs") {
             var variable = node.right.left.data
             postHelper(node.right.right, n => {
                 if (n.data == variable) {
-                    n.obj.parent.tree.setCoord(n.obj.coord, node.left) // for some reason this is not visiting the left node
+                    console.log(n)
+                    n.obj.parent.tree.setCoord(n.obj.coord, node.left)
                 }
             })
-            // console.log(node.right.obj.coord.slice(0, -1))
-            // console.log(node.right.right)
+            console.log({...node.right.right})
             node.right.obj.parent.tree.setCoord(node.right.obj.coord.slice(0, -1), node.right.right)
-            // expr.tree = node.right.obj.parent.tree
-            console.log("falsing")
             return false
         }
         })
@@ -190,6 +196,8 @@ function init() {
     print.x = 500
     stage.addChild(print)
 
+    
+
     stage.on("stagemousedown", (e) => {
         stage.pressed = true
         stage.downX = e.stageX
@@ -218,6 +226,32 @@ function init() {
                 stage.removeChild(stage.getChildByName("selectbox"))
                 stage.update()
                 break
+        }
+        if (keyListening) {
+            if (combinatorName == null) combinatorName = e.key.toUpperCase()
+            else if (combinatorInputs == null) {
+                combinatorInputs = e.key
+                var detected = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
+                console.log(detected)
+                var expr = new Expression(stage)
+                var tree = detected.tree.copy()
+                console.log(detected.tree)
+                postHelper(tree, n => {
+                    if (!["abs", "app"].includes(n.data)) n.data = numCombinators + n.data
+                })
+                var comb = new Combinator(combinatorName, combinatorInputs, tree, [])
+                expr.addChild(comb)
+                expr.tree = new TreeNode(combinatorName, null, null, comb)
+                expr.rightmostFunction = comb
+                stage.addChild(expr)
+                expr.x = window.innerWidth / 2;
+                expr.y = window.innerHeight / 2;
+                numCombinators++
+                keyListening = false
+                combinatorName = null
+                combinatorInputs = null
+                stage.update()
+            }
         }
     }
 

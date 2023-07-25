@@ -7,11 +7,14 @@ class TreeNode {
     }
     
     setCoord(coord, node) {
+        // console.log(coord)
+        // console.log(this)
         if (coord.length == 0) {
+            console.log()
             this.data = node.data
             this.left = node.left
             this.right = node.right
-            this.obj = this.obj
+            this.obj = node.obj
         }
         var parent = this
         for (var i = 1; i < coord.length; i++) {
@@ -32,6 +35,14 @@ class TreeNode {
             else if (coord[i] == "l") parent = parent.left
         }
         return parent
+    }
+
+    copy() {
+        var left = null
+        var right = null
+        if (this.left != null) left = this.left.copy()
+        if (this.right != null) right = this.right.copy()
+        return new TreeNode((" " + this.data).slice(1), left, right, {...this.obj})
     }
 }
 

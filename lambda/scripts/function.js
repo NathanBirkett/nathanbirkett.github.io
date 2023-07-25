@@ -41,11 +41,12 @@ class Function extends createjs.Container {
     onNewOutput(color) {
         var isParameter = false
         if (this.input != null) isParameter = this.input.isParameter
+        console.log((this.coord.length == 0) ? ["r"] : [...this.coord, "r"])
         var func = new Function(stage, (this.coord.length == 0) ? ["r"] : [...this.coord, "r"], color)
         // console.log(this.parent.tree)
         if (isParameter) this.parent.tree.getCoord(this.coord).right.obj = func
         // else //ok what do i do with light blue squares
-        if (color == "lightblue") func.coord = [...this.coord]
+        if (color == "lightblue") func.coord = this.coord //possibly [...this.coord]
         func.y = this.y
         func.x = this.x + 50 + 25
         // console.log(func)
@@ -57,6 +58,7 @@ class Function extends createjs.Container {
         this.output = output
         this.parent.rightmostFunction = this.parent.children.reduce((p, c) => {return p.x > c.x ? p : c})
         if (this.input != null && isParameter) this.parent.removeChild(this)
+        console.log(func.coord)
         stage.update()
     }
 
