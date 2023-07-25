@@ -10,7 +10,6 @@ class TreeNode {
         // console.log(coord)
         // console.log(this)
         if (coord.length == 0) {
-            console.log()
             this.data = node.data
             this.left = node.left
             this.right = node.right

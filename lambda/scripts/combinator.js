@@ -61,4 +61,29 @@ class Combinator extends createjs.Container {
         this.parent.rightmostFunction = this.parent.children.reduce((p, c) => {return p.x > c.x ? p : c})
         stage.update()
     }
+
+    copy() {
+        return new Combinator((" " +this.name).slice(1), this.nInputs, this.tree.copy(), [...this.coord])
+    }
+}
+
+class CombinatorViewer extends createjs.Container {
+    constructor(comb) {
+        super()
+        this.comb = comb
+
+        this.addChild(comb)
+
+        this.on("mousedown", e => {
+            var expr = new Expression(stage)
+            var newComb = this.comb.copy()
+            expr.addChild(newComb)
+            stage.addChild(expr)
+            expr.x = window.innerWidth / 2;
+            expr.y = window.innerHeight / 2;
+            expr.rightmostFunction = comb
+            stage.setChildIndex(expr, stage.numChildren - 1)
+            stage.update()
+        })
+    }
 }

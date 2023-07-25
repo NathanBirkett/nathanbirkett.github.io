@@ -43,8 +43,7 @@ function helperHelper(tree) {
     return expr
 }
 
-function parseHelper(tree) { //perhaps include callback
-    // console.log(tree)
+function parseHelper(tree) {
     var expr
     if (!["abs", "app"].includes(tree.data)) {
         var obj = null
@@ -59,17 +58,13 @@ function parseHelper(tree) { //perhaps include callback
         var func = expr.children[0]
         func.onNewInput() 
         func.input.onDoubleClick(tree.left.data, tree.left.data)
-        // add(expr)
         parseTree(expr.tree.right.obj, tree.right)
     } else if (tree.data == "app") {
         var left = parseHelper(tree.left)
-        // add(left)
         var right = parseHelper(tree.right)
-        // add(right)
         if (right.tree.data != "abs" && right.tree.data != "app") {
             right.children[0].onNewInput()
         }
-        // console.log(right.tree)
         var applier
         if (right.tree.data == "abs") applier = right.tree.obj
         else if (right.tree.data == "app") {
@@ -87,7 +82,7 @@ function parseHelper(tree) { //perhaps include callback
             }
         }
         else applier = right.tree.obj.input
-        console.log(applier)
+        // console.log(applier)
         expr = left.applyTo(applier)
         // add(expr)
     }
@@ -115,6 +110,7 @@ var keyListening
 var combinatorName
 var combinatorInputs
 var numCombinators = 0
+var combinatorList = []
 
 function init() {
     var canvas = document.getElementById("canvas")
@@ -146,20 +142,16 @@ function init() {
             var variable = node.right.left.data
             postHelper(node.right.right, n => {
                 if (n.data == variable) {
-                    console.log(n)
                     n.obj.parent.tree.setCoord(n.obj.coord, node.left)
                 }
             })
-            console.log({...node.right.right})
             node.right.obj.parent.tree.setCoord(node.right.obj.coord.slice(0, -1), node.right.right)
             return false
         }
         })
         stage.removeChild(expr)
         tree = expr.tree
-        console.log(tree)
         var newExpr = helperHelper(tree)
-        console.log(newExpr.tree)
         stage.addChild(newExpr)
         newExpr.x = window.innerWidth / 2;
         newExpr.y = window.innerHeight / 2;
@@ -180,7 +172,6 @@ function init() {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
         stage.removeChild(expr)
         var newExpr = helperHelper(expr.tree)
-        // console.log(newExpr)
         stage.addChild(newExpr)
         newExpr.x = window.innerWidth / 2;
         newExpr.y = window.innerHeight / 2;
@@ -220,6 +211,22 @@ function init() {
         }
     })
 
+    function updateCombinators() {
+        var background = new createjs.Shape()
+        background.graphics.beginFill("lightgrey").drawRect(0, 0, 200, window.innerHeight)
+        stage.addChildAt(background, 0)
+        for (var i = 0; i < combinatorList.length; i++) {
+            var comb = combinatorList[i]
+            stage.addChild(comb.clone())
+            var view = new CombinatorViewer(comb)
+            view.x = 50
+            view.y = i * 200 + 100 + 25
+            console.log(view)
+            stage.addChild(view)
+        }
+        stage.update()
+    }
+
     document.onkeydown = (e) => {
         switch (e.key) {
             case "Escape":
@@ -232,10 +239,8 @@ function init() {
             else if (combinatorInputs == null) {
                 combinatorInputs = e.key
                 var detected = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
-                console.log(detected)
                 var expr = new Expression(stage)
                 var tree = detected.tree.copy()
-                console.log(detected.tree)
                 postHelper(tree, n => {
                     if (!["abs", "app"].includes(n.data)) n.data = numCombinators + n.data
                 })
@@ -248,8 +253,10 @@ function init() {
                 expr.y = window.innerHeight / 2;
                 numCombinators++
                 keyListening = false
+                combinatorList.push(new Combinator(combinatorName, combinatorInputs, tree, []))
                 combinatorName = null
                 combinatorInputs = null
+                updateCombinators()
                 stage.update()
             }
         }
