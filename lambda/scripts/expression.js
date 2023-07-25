@@ -11,7 +11,13 @@ class Expression extends createjs.Container {
         this.on('pressmove', function(e) {
             if (!(this.parent instanceof Expression)) {
                 var detector = new createjs.Shape()
-                detector.setBounds(this.x + this.rightmostFunction.x, this.y + this.rightmostFunction.y + 25, 50, 50)
+                var rightmostX = this.rightmostFunction.x
+                var rightmostY = this.rightmostFunction.y
+                if (this.rightmostFunction instanceof Combinator) {
+                    console.log("combinator")
+                    rightmostX = this.rightmostFunction.width / 2 - 25
+                }
+                detector.setBounds(this.x + rightmostX, this.y + rightmostY+ 25, 50, 50)
                 var det = getObjectsInBounds(stage, detector).filter(i => (i instanceof Input || i instanceof Combinator) && this.children[0] != i)
                 if (det.length > 0) {
                     this.applyTo(det[0])
@@ -41,22 +47,18 @@ class Expression extends createjs.Container {
         // console.log(applier)
         if (applier.coord == null) applier.coord = [...applier.func.coord]
         console.log(applier.coord)
-        const rightX = structuredClone(this.rightmostFunction.x)
+        const rightX = !(this.rightmostFunction instanceof Combinator) ? structuredClone(this.rightmostFunction.x) : this.rightmostFunction.width / 2 - 25 + this.rightmostFunction.x
+        console.log(rightX)
         const children = [...this.children]
         console.log([...children[0].coord])
         for (var i = 0; i < children.length; i++) {
             this.removeChild(children[i])
             applier.parent.addChild(children[i])
             children[i].newAdded = true
+            console.log(children[i].x + applier.x - rightX)
             children[i].x += applier.x - rightX
+            console.log(children[i])
             children[i].y += applier.y - 75
-            // if (children[i].constructor.name != "Output") try {
-            //     children[i].coord.unshift("l")
-            //     if (!applier.isParameter) children[i].coord.unshift(...applier.coord)
-            // } catch (error) {
-            //     console.log(children[i])
-            // } 
-            console.log([...children[0].coord])
         }
 
         if (applier.isParameter) {
@@ -113,7 +115,7 @@ class Expression extends createjs.Container {
         //     })
         // }
         // console.log(applier)
-        var tRightX = structuredClone(this.rightmostFunction.x)
+        var tRightX = !(this.rightmostFunction instanceof Combinator) ? structuredClone(this.rightmostFunction.x) : this.rightmostFunction.width / 2 - 25 + this.rightmostFunction.x
         applier.parent.children.forEach(e => {
             // if (!e.newAdded && e.constructor.name != "Output") try {
             //     e.coord.unshift("r")

@@ -24,9 +24,12 @@ class Combinator extends createjs.Container {
             this.addChild(polygon)
         }
 
-        var rect = new createjs.Shape()
-        rect.graphics.beginFill("lightgreen").drawRect(0, 0, width, height)
-        this.addChild(rect)
+        // var rect = new createjs.Shape()
+        // rect.graphics.beginFill("lightgreen").drawRect(0, 0, width, height)
+        // this.addChild(rect)
+        var body = new createjs.Shape()
+        body.graphics.beginFill("lightgreen").beginStroke().moveTo(0, 0).lineTo(this.width, 0).lineTo(this.width, 25).lineTo(this.width / 2 + 25, 50).lineTo(this.width / 2 - 25, 50).lineTo(0, 25).lineTo(0, 0)
+        this.addChild(body)
 
         var newOutput = new createjs.Shape()
         this.newOutput = newOutput
