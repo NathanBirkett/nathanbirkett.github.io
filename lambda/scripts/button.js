@@ -13,6 +13,10 @@ class Button extends createjs.Container {
         text.textBaseline = "middle"
         this.addChild(text)
 
-        this.on("click", onClick)
+        this.on("click", e => {
+            onClick()
+            stage.removeChild(stage.getChildByName("selectbox"))
+            stage.update()
+        })
     }
 }

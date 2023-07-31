@@ -1,6 +1,6 @@
 function getItemsUnderPoint(stage, x, y, obj = undefined) {
     return [... new Set((stage.getObjectsUnderPoint(x, y)).map(function(value){return value.parent}))]
-    .filter(function(item){return item != obj})
+    .filter(function(item){return item != obj && item != stage})
 }
 
 function log(e) {
@@ -137,6 +137,8 @@ function init() {
 
     var betaReduce = new Button("\u03b2-reduce", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
+        const x = expr.rightmostFunction.x + expr.x
+        const y = expr.rightmostFunction.y + expr.y
         console.log(expr.tree.copy())
         postOrder(expr.tree, node => {if (node.data == "app" && node.right.data == "abs") {
             var variable = node.right.left.data
@@ -153,8 +155,8 @@ function init() {
         tree = expr.tree
         var newExpr = helperHelper(tree)
         stage.addChild(newExpr)
-        newExpr.x = window.innerWidth / 2;
-        newExpr.y = window.innerHeight / 2;
+        newExpr.x = x
+        newExpr.y = y
 
         stage.update()
     })
@@ -190,16 +192,23 @@ function init() {
     
 
     stage.on("stagemousedown", (e) => {
+        console.log(getItemsUnderPoint(stage, e.stageX, e.stageY)[0] instanceof Button)
+        if (!(getItemsUnderPoint(stage, e.stageX, e.stageY)[0] instanceof Button)) {
+            console.log(stage.removeChild(stage.getChildByName("selectbox")))
+            stage.update()
+        }
         stage.pressed = true
         stage.downX = e.stageX
         stage.downY = e.stageY
     })
 
-    stage.on("stagemouseup", (e) => {
-        stage.pressed = false
-    })
+    
 
     stage.on("stagemousemove", (e) => {
+        stage.children.forEach(i => {
+            if (i.clicked) e.target = i
+        });
+        if (e.target != stage) e.target.pressMove(e)
         if (stage.pressed && stage.getObjectsUnderPoint(e.stageX, e.stageY).filter((i) => i != stage.getChildByName("selectbox")).length == 0) {
             stage.removeChild(stage.getChildByName("selectbox"))
             var box = new createjs.Shape()
@@ -209,6 +218,11 @@ function init() {
             stage.addChildAt(box, 0)
             stage.update()
         }
+    })
+
+    stage.on("stagemouseup", (e) => {
+        stage.pressed = false
+        // stage.off("stagemousemove", stageMouseMove)
     })
 
     function updateCombinators() {
@@ -262,12 +276,14 @@ function init() {
         }
     }
 
+    
+
     // var K = new TreeNode("abstraction", "red", new TreeNode("abstraction", "orange", "red"))
 
     stage.update();
 }
 
-const colorList = ["red", "orange", "yellow", "green", "cyan", "blue", "purple", "pink", "gray", "brown"]
+const colorList = ["red", "orange", "yellow", "lime", "olive", "green", "teal", "navy", "cyan", "blue", "purple", "magenta", "maroon", "gray", "silver", "tan"]
 var unusedColors = colorList
 
 window.onload = init

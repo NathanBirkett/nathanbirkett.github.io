@@ -2,31 +2,23 @@ class Expression extends createjs.Container {
     constructor(stage, color, obj) {
         super()
 
+        
+        this.clicked = false
         this.on("mousedown", e => {
             this.clickX = e.stageX - this.x
             this.clickY = e.stageY - this.y
             stage.setChildIndex(this, stage.numChildren - 1)
+            this.clicked = true
         })
 
-        this.on('pressmove', function(e) {
-            if (!(this.parent instanceof Expression)) {
-                var detector = new createjs.Shape()
-                var rightmostX = this.rightmostFunction.x
-                var rightmostY = this.rightmostFunction.y
-                if (this.rightmostFunction instanceof Combinator) {
-                    rightmostX = this.rightmostFunction.width / 2 - 25
-                }
-                detector.setBounds(this.x + rightmostX, this.y + rightmostY+ 25, 50, 50)
-                var det = getObjectsInBounds(stage, detector).filter(i => (i instanceof Input || i instanceof Combinator) && this.children[0] != i)
-                if (det.length > 0) {
-                    this.applyTo(det[0])
-                } else {
-                    this.x = e.stageX - this.clickX;
-                    this.y = e.stageY - this.clickY;
-                }
-                stage.update();
-        }
+        this.on("pressup", e => {
+            this.clicked = false
         })
+
+        
+
+        this.on('pressmove', e => {this.pressMove(e)})
+
         if (obj != null) {
             this.tree = new TreeNode(obj.name, null, null, obj)
             this.addChild(obj)
@@ -40,9 +32,29 @@ class Expression extends createjs.Container {
         }
     }
 
+    pressMove(e) {
+        if (!(this.parent instanceof Expression)) {
+            var detector = new createjs.Shape()
+            var rightmostX = this.rightmostFunction.x
+            this.rightmostY = this.rightmostFunction.y
+            if (this.rightmostFunction instanceof Combinator) {
+                rightmostX = this.rightmostFunction.width / 2 - 25
+            }
+            detector.setBounds(this.x + rightmostX, this.y + this.rightmostY+ 25, 50, 50)
+            var det = getObjectsInBounds(stage, detector).filter(i => (i instanceof Input || i instanceof Combinator) && this.children[0] != i)
+            if (det.length > 0 && getItemsUnderPoint(stage, det[0].parent.x + det[0].x + 25, det[0].parent.y + det[0].y - 45).length == 0) {
+                this.applyTo(det[0])
+            } else {
+                this.x = e.stageX - this.clickX;
+                this.y = e.stageY - this.clickY;
+            }
+            stage.update();
+        }
+    }
+
     applyTo(applier) {
-        console.log({...this})
-        console.log({...applier})
+        // console.log({...this})
+        // console.log({...applier})
         if (applier.coord == null) applier.coord = [...applier.func.coord]
         const rightX = !(this.rightmostFunction instanceof Combinator) ? structuredClone(this.rightmostFunction.x) : this.rightmostFunction.width / 2 - 25 + this.rightmostFunction.x
         const children = [...this.children]
@@ -90,6 +102,12 @@ class Expression extends createjs.Container {
             var output = applier.parent.tree.getCoord(applier.coord.slice(0, -1)).obj.output
             output.addLength(rightX)
         }
+
+        applier.parent.clickX = this.clickX + tRightX
+        applier.parent.clickY = this.rightmostY - this.clickY
+        applier.parent.x = this.x + tRightX
+        applier.parent.y = this.rightmostY - this.y
+        stage.removeChild(this)
         return applier.parent
     }
 
