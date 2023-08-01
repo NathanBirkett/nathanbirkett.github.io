@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="lambda.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script src = "scripts/combinatorInput.js"></script>
     <script src = "scripts/combinator.js"></script>
     <script src = "scripts/function.js"></script>
     <script src = "scripts/input.js"></script>
@@ -13,9 +14,18 @@
     <script src = "scripts/button.js"></script>
     <script src = "scripts/expression.js"></script>
     <script src = "scripts/main.js"></script>
-    <title>Document</title>
+    <title>Lambda Simulator</title>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
+    <div id="popup" style="position: absolute; left: 100px; top: 49px; width: 100px; height: 100px; background-color: green; padding: 10px; z-index: -1;">
+        <label>name</label>
+        <input type="text" style="width: 90px" id="name" autocomplete="off">
+        <label>inputs</label>
+        <input type="number" style="width: 90px" id="inputs" autocomplete="off">
+        <input type="submit" value="submit" onclick="newCombinator()">
+    </div>
+    <div style="position: absolute; left: 0px; top: 0px; z-index: 0; background: white">
+        <canvas id="canvas"></canvas>
+    </div>
 </body>
 </html>

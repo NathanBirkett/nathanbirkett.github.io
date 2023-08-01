@@ -1,7 +1,6 @@
 class Button extends createjs.Container {
-    constructor(displayText, onClick) {
+    constructor(displayText, onClick, keepSelection) {
         super()
-
         var rect = new createjs.Shape()
         rect.graphics.beginFill("green").drawRect(0, 0, 100, 50)
         this.addChild(rect)
@@ -15,7 +14,7 @@ class Button extends createjs.Container {
 
         this.on("click", e => {
             onClick()
-            stage.removeChild(stage.getChildByName("selectbox"))
+            if (keepSelection != true) stage.removeChild(stage.getChildByName("selectbox"))
             stage.update()
         })
     }

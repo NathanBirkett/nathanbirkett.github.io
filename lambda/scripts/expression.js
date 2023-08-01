@@ -41,8 +41,12 @@ class Expression extends createjs.Container {
                 rightmostX = this.rightmostFunction.width / 2 - 25
             }
             detector.setBounds(this.x + rightmostX, this.y + this.rightmostY+ 25, 50, 50)
-            var det = getObjectsInBounds(stage, detector).filter(i => (i instanceof Input || i instanceof Combinator) && this.children[0] != i)
-            if (det.length > 0 && getItemsUnderPoint(stage, det[0].parent.x + det[0].x + 25, det[0].parent.y + det[0].y - 45).length == 0) {
+            var det = getObjectsInBounds(stage, detector).filter(i => (i instanceof Input || i instanceof CombinatorInput) && this.children[0] != i)
+            if (det.length > 0) {
+                var parent = (det[0] instanceof CombinatorInput) ? det[0].parent.parent : det[0].parent
+            }
+            if (det.length > 0 && getItemsUnderPoint(stage, parent.x + det[0].x + 25, parent.y + det[0].y - 36).length == 0) {
+                console.log(det[0])
                 this.applyTo(det[0])
             } else {
                 this.x = e.stageX - this.clickX;
@@ -52,24 +56,25 @@ class Expression extends createjs.Container {
         }
     }
 
-    applyTo(applier) {
-        // console.log({...this})
-        // console.log({...applier})
+    applyTo(applier, x) {
+        console.log({...this})
+        console.log({...applier})
+        var parent = (applier instanceof CombinatorInput) ? applier.parent.parent : applier.parent
         if (applier.coord == null) applier.coord = [...applier.func.coord]
         const rightX = !(this.rightmostFunction instanceof Combinator) ? structuredClone(this.rightmostFunction.x) : this.rightmostFunction.width / 2 - 25 + this.rightmostFunction.x
         const children = [...this.children]
         for (var i = 0; i < children.length; i++) {
             this.removeChild(children[i])
-            applier.parent.addChild(children[i])
+            parent.addChild(children[i])
             children[i].newAdded = true
             children[i].x += applier.x - rightX
             children[i].y += applier.y - 75
         }
 
         if (applier.isParameter) {
-            postOrder(applier.parent.tree, n => {if (n.obj != null) n.obj.coord.unshift("r")})
-            applier.parent.tree = new TreeNode("app", this.tree, applier.parent.tree) //application inputs have undefined coords for some reason
-            postOrder(applier.parent.tree, n => {
+            postOrder(parent.tree, n => {if (n.obj != null) n.obj.coord.unshift("r")})
+            parent.tree = new TreeNode("app", this.tree, parent.tree) //application inputs have undefined coords for some reason
+            postOrder(parent.tree, n => {
                 if (n.obj != null && n.obj.newAdded && !(n.obj instanceof Output)) {
                     n.obj.coord.unshift("l")
                 } 
@@ -77,14 +82,14 @@ class Expression extends createjs.Container {
         } else {
             var coord = [...applier.func.coord]
             while (true) {
-                if (applier.parent.tree.getCoord(coord.slice(0, -1)).data != "app" || applier.parent.tree.getCoord(coord.slice(0, -1)).right != applier.parent.tree.getCoord(coord)) break
+                if (parent.tree.getCoord(coord.slice(0, -1)).data != "app" || parent.tree.getCoord(coord.slice(0, -1)).right != parent.tree.getCoord(coord)) break
                 coord = coord.slice(0, -1)
             }
-            postOrder(applier.parent.tree.getCoord([...coord]), n => {if (n.obj != null) n.obj.coord.unshift("r")})
-            if (coord.length == 0) applier.parent.tree = new TreeNode("app", this.tree, applier.parent.tree, applier)
-            else applier.parent.tree.setCoord(coord, new TreeNode("app", this.tree, applier.parent.tree.getCoord(coord), applier))
+            postOrder(parent.tree.getCoord([...coord]), n => {if (n.obj != null) n.obj.coord.unshift("r")})
+            if (coord.length == 0) parent.tree = new TreeNode("app", this.tree, parent.tree, applier)
+            else parent.tree.setCoord(coord, new TreeNode("app", this.tree, parent.tree.getCoord(coord), applier))
             applier.coord = coord
-            postOrder(applier.parent.tree, n => {
+            postOrder(parent.tree, n => {
                 if (n.obj != null && n.obj.newAdded && !(n.obj instanceof Output)) {
                     n.obj.coord.unshift("l")
                     n.obj.coord.unshift(...applier.coord)
@@ -92,23 +97,23 @@ class Expression extends createjs.Container {
             })
         }
         var tRightX = !(this.rightmostFunction instanceof Combinator) ? structuredClone(this.rightmostFunction.x) : this.rightmostFunction.width / 2 - 25 + this.rightmostFunction.x
-        applier.parent.children.forEach(e => {
+        parent.children.forEach(e => {
             if (e.x >= tRightX || e.newAdded) {
                 e.x += rightX
                 e.newAdded = false
             }
         })
-        if (applier.parent.tree.getCoord(applier.coord.slice(0, -1)).data == "abs") {
-            var output = applier.parent.tree.getCoord(applier.coord.slice(0, -1)).obj.output
+        if (parent.tree.getCoord(applier.coord.slice(0, -1)).data == "abs") {
+            var output = parent.tree.getCoord(applier.coord.slice(0, -1)).obj.output
             output.addLength(rightX)
         }
 
-        applier.parent.clickX = this.clickX + tRightX
-        applier.parent.clickY = this.rightmostY - this.clickY
-        applier.parent.x = this.x + tRightX
-        applier.parent.y = this.rightmostY - this.y
+        parent.clickX = this.clickX + tRightX
+        parent.clickY = this.rightmostY - this.clickY
+        parent.x = this.x + tRightX
+        parent.y = this.rightmostY - this.y
         stage.removeChild(this)
-        return applier.parent
+        return parent
     }
 
     setOutput() {

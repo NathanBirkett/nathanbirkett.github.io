@@ -18,10 +18,10 @@ class Combinator extends createjs.Container {
 
         for (let i = 0; i < nInputs; i++) {
             var x = i * (50 + 25)
-            var polygon = new createjs.Shape()
-            this.fillCommands.push(polygon.graphics.beginFill("lightgreen").command)
-            polygon.graphics.beginStroke().moveTo(25 + x, 25).lineTo(x, -25).lineTo(50 + x, -25).lineTo(25 + x, 25)
-            this.addChild(polygon)
+            var input = new CombinatorInput(this)
+            input.x = x
+            this.inputs.push(input)
+            this.addChild(input)
         }
 
         // var rect = new createjs.Shape()

@@ -34,6 +34,14 @@ function add(exp) {
     stage.update()
 }
 
+function replaceCombinators(tree) {
+    postOrder(tree, n => {
+        if (n.tree != null) {
+            tree.setCoord(n.obj.coord)
+        }
+    })
+}
+
 function helperHelper(tree) {
     console.log(tree)
     var expr = parseHelper(tree)
@@ -105,6 +113,49 @@ function parseTree(currObj, tree) {
     }
 }
 
+function newCombinator() {
+    var name = document.getElementById("name").value.toUpperCase()
+    var inputs = document.getElementById("inputs").value
+
+    var detected = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
+    var expr = new Expression(stage)
+    var tree = detected.tree.copy()
+    postHelper(tree, n => {
+        if (!["abs", "app"].includes(n.data)) n.data = numCombinators + n.data
+    })
+    var comb = new Combinator(name, inputs, tree, [])
+    expr.addChild(comb)
+    expr.tree = new TreeNode(name, null, null, comb)
+    expr.rightmostFunction = comb
+    stage.addChild(expr)
+    expr.x = window.innerWidth / 2;
+    expr.y = window.innerHeight / 2;
+    numCombinators++
+    keyListening = false
+    combinatorList.push(new Combinator(name, inputs, tree, []))
+    updateCombinators()
+    document.getElementById("popup").style.zIndex = "-1"
+    document.getElementById("name").value = ""
+    document.getElementById("inputs").value = ""
+    stage.update()
+}
+
+function updateCombinators() {
+    var background = new createjs.Shape()
+    background.graphics.beginFill("lightgrey").drawRect(0, 0, 200, window.innerHeight)
+    stage.addChildAt(background, 0)
+    for (var i = 0; i < combinatorList.length; i++) {
+        var comb = combinatorList[i]
+        stage.addChild(comb.clone())
+        var view = new CombinatorViewer(comb)
+        view.x = 50
+        view.y = i * 200 + 100 + 25
+        // console.log(view)
+        stage.addChild(view)
+    }
+    stage.update()
+}
+
 var stage
 var keyListening
 var combinatorName
@@ -129,9 +180,10 @@ function init() {
     stage.addChild(addLambda)
 
     var addCombinator = new Button("add combinator", () => {
+        document.getElementById("popup").style.zIndex = "1"
         keyListening = true
         stage.update()
-    })
+    }, true)
     addCombinator.x = 100
     stage.addChild(addCombinator)
 
@@ -155,8 +207,8 @@ function init() {
         tree = expr.tree
         var newExpr = helperHelper(tree)
         stage.addChild(newExpr)
-        newExpr.x = x
-        newExpr.y = y
+        newExpr.x = x - newExpr.rightmostFunction.x
+        newExpr.y = y - newExpr.rightmostFunction.y
 
         stage.update()
     })
@@ -192,14 +244,16 @@ function init() {
     
 
     stage.on("stagemousedown", (e) => {
-        console.log(getItemsUnderPoint(stage, e.stageX, e.stageY)[0] instanceof Button)
+        document.getElementById("popup").style.zIndex = "-1"
         if (!(getItemsUnderPoint(stage, e.stageX, e.stageY)[0] instanceof Button)) {
-            console.log(stage.removeChild(stage.getChildByName("selectbox")))
+            stage.removeChild(stage.getChildByName("selectbox"))
             stage.update()
         }
-        stage.pressed = true
-        stage.downX = e.stageX
-        stage.downY = e.stageY
+        if (stage.getObjectsUnderPoint(e.stageX, e.stageY).filter((i) => i != stage.getChildByName("selectbox")).length == 0) {
+            stage.pressed = true
+            stage.downX = e.stageX
+            stage.downY = e.stageY
+        }
     })
 
     
@@ -209,7 +263,7 @@ function init() {
             if (i.clicked) e.target = i
         });
         if (e.target != stage) e.target.pressMove(e)
-        if (stage.pressed && stage.getObjectsUnderPoint(e.stageX, e.stageY).filter((i) => i != stage.getChildByName("selectbox")).length == 0) {
+        if (stage.pressed) {
             stage.removeChild(stage.getChildByName("selectbox"))
             var box = new createjs.Shape()
             box.graphics.beginFill("aliceblue").drawRect(stage.downX, stage.downY, e.stageX - stage.downX, e.stageY - stage.downY)
@@ -222,24 +276,13 @@ function init() {
 
     stage.on("stagemouseup", (e) => {
         stage.pressed = false
+        stage.children.forEach(i =>{
+            if (i.clicked) i.clicked = false
+        })
         // stage.off("stagemousemove", stageMouseMove)
     })
 
-    function updateCombinators() {
-        var background = new createjs.Shape()
-        background.graphics.beginFill("lightgrey").drawRect(0, 0, 200, window.innerHeight)
-        stage.addChildAt(background, 0)
-        for (var i = 0; i < combinatorList.length; i++) {
-            var comb = combinatorList[i]
-            stage.addChild(comb.clone())
-            var view = new CombinatorViewer(comb)
-            view.x = 50
-            view.y = i * 200 + 100 + 25
-            console.log(view)
-            stage.addChild(view)
-        }
-        stage.update()
-    }
+    
 
     document.onkeydown = (e) => {
         switch (e.key) {
@@ -252,26 +295,26 @@ function init() {
             if (combinatorName == null) combinatorName = e.key.toUpperCase()
             else if (combinatorInputs == null) {
                 combinatorInputs = e.key
-                var detected = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
-                var expr = new Expression(stage)
-                var tree = detected.tree.copy()
-                postHelper(tree, n => {
-                    if (!["abs", "app"].includes(n.data)) n.data = numCombinators + n.data
-                })
-                var comb = new Combinator(combinatorName, combinatorInputs, tree, [])
-                expr.addChild(comb)
-                expr.tree = new TreeNode(combinatorName, null, null, comb)
-                expr.rightmostFunction = comb
-                stage.addChild(expr)
-                expr.x = window.innerWidth / 2;
-                expr.y = window.innerHeight / 2;
-                numCombinators++
-                keyListening = false
-                combinatorList.push(new Combinator(combinatorName, combinatorInputs, tree, []))
-                combinatorName = null
-                combinatorInputs = null
-                updateCombinators()
-                stage.update()
+                // var detected = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
+                // var expr = new Expression(stage)
+                // var tree = detected.tree.copy()
+                // postHelper(tree, n => {
+                //     if (!["abs", "app"].includes(n.data)) n.data = numCombinators + n.data
+                // })
+                // var comb = new Combinator(combinatorName, combinatorInputs, tree, [])
+                // expr.addChild(comb)
+                // expr.tree = new TreeNode(combinatorName, null, null, comb)
+                // expr.rightmostFunction = comb
+                // stage.addChild(expr)
+                // expr.x = window.innerWidth / 2;
+                // expr.y = window.innerHeight / 2;
+                // numCombinators++
+                // keyListening = false
+                // combinatorList.push(new Combinator(combinatorName, combinatorInputs, tree, []))
+                // combinatorName = null
+                // combinatorInputs = null
+                // updateCombinators()
+                // stage.update()
             }
         }
     }
