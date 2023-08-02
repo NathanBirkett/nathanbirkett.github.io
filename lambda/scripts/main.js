@@ -34,12 +34,32 @@ function add(exp) {
     stage.update()
 }
 
-function replaceCombinators(tree) {
-    postOrder(tree, n => {
-        if (n.tree != null) {
-            tree.setCoord(n.obj.coord)
+function replaceCombinators(tree, expr) {
+    console.log(tree.copy())
+    var nInputs = 0
+    reversePostOrder(tree, n => {
+        if (n.obj != null && n.obj.tree != null
+            && n.obj.coord.length >= n.obj.nInputs
+        ) {
+            var full = true
+            for (var i = 1; i <= n.obj.nInputs; i++) {
+                if (tree.getCoord(n.obj.coord.slice(0, -i)).data != "app") full = false
+            }
+            if (full) {
+                console.log(n.obj.coord)
+                tree.setCoord(n.obj.coord, n.obj.tree)
+                postOrder(tree.getCoord(n.obj.coord), node => {
+                    if (node.obj != null && node.obj.coord != null) {
+                        node.obj.coord = [...n.obj.coord, ...node.obj.coord]
+                        node.obj.parent = expr
+                    }
+                })
+                nInputs = n.obj.nInputs
+                return false
+            }
         }
     })
+    return nInputs
 }
 
 function helperHelper(tree) {
@@ -53,13 +73,16 @@ function helperHelper(tree) {
 
 function parseHelper(tree) {
     var expr
-    if (!["abs", "app"].includes(tree.data)) {
+    console.log(tree.data)
+    console.log(colorList)
+    console.log(colorList.includes(tree.data))
+    if (colorList.includes(tree.data) || colorList.includes(tree.data.slice(0, -1))) {
         var obj = null
-        if (tree.obj instanceof Combinator) {
-            tree.obj.y = 0
-            tree.obj.x = 0
-            obj = tree.obj
-        }
+        // if (tree.obj instanceof Combinator) {
+        //     tree.obj.y = 0
+        //     tree.obj.x = 0
+        //     obj = tree.obj
+        // }
         expr = new Expression(stage, tree.data, obj)
     } else if (tree.data == "abs") {
         expr = new Expression(stage, tree.left.data)
@@ -69,8 +92,11 @@ function parseHelper(tree) {
         parseTree(expr.tree.right.obj, tree.right)
     } else if (tree.data == "app") {
         var left = parseHelper(tree.left)
+        console.log(left)
+        add(left)
         var right = parseHelper(tree.right)
-        if (right.tree.data != "abs" && right.tree.data != "app") {
+        add(right)
+        if (colorList.includes(right.tree.data)) {
             right.children[0].onNewInput()
         }
         var applier
@@ -86,13 +112,26 @@ function parseHelper(tree) {
                     if (!["abs"].includes(right.tree.getCoord(coord).data)) break
                     coord = [...coord, "r"]
                 }
+                console.log(coord.slice(0, -1))
                 applier = right.tree.getCoord(coord.slice(0, -1)).obj
             }
+        } else if (!colorList.includes(right.tree.data)) {
+            console.log(right.tree.obj)
+            applier = right.tree.obj.inputs[0]
         }
         else applier = right.tree.obj.input
         // console.log(applier)
         expr = left.applyTo(applier)
         // add(expr)
+    } else {
+        console.log(tree)
+        var obj = _.cloneDeep(tree.obj)
+        obj.x = 0
+        obj.y = 0
+        obj.coord = []
+        console.log(obj)
+        expr = new Expression(stage, tree.data, obj)
+        console.log({...expr}.children)
     }
     return expr
 }
@@ -108,8 +147,13 @@ function parseTree(currObj, tree) {
         currObj.onNewInput() // tree.right isn't used??
         var left = parseHelper(tree.left)
         left.applyTo(currObj.input)
-    } else {
+    } else if (colorList.includes(tree.data) || colorList.includes(tree.data.slice(0, -1))) {
         currObj.setColor(tree.data)
+    } else {
+        console.log(combinatorList.map(e => e.name).indexOf(tree.data))
+        for (var i = 0; i <= combinatorList.map(e => e.name).indexOf(tree.data); i++) {
+            currObj.onChangeCombinator()
+        }
     }
 }
 
@@ -121,7 +165,7 @@ function newCombinator() {
     var expr = new Expression(stage)
     var tree = detected.tree.copy()
     postHelper(tree, n => {
-        if (!["abs", "app"].includes(n.data)) n.data = numCombinators + n.data
+        if (!["abs", "app"].includes(n.data)) n.data =  n.data + numCombinators
     })
     var comb = new Combinator(name, inputs, tree, [])
     expr.addChild(comb)
@@ -147,6 +191,7 @@ function updateCombinators() {
     for (var i = 0; i < combinatorList.length; i++) {
         var comb = combinatorList[i]
         stage.addChild(comb.clone())
+        console.log(comb)
         var view = new CombinatorViewer(comb)
         view.x = 50
         view.y = i * 200 + 100 + 25
@@ -189,26 +234,40 @@ function init() {
 
     var betaReduce = new Button("\u03b2-reduce", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
+        var iterations = Math.max(1, replaceCombinators(expr.tree, expr))
         const x = expr.rightmostFunction.x + expr.x
         const y = expr.rightmostFunction.y + expr.y
-        console.log(expr.tree.copy())
-        postOrder(expr.tree, node => {if (node.data == "app" && node.right.data == "abs") {
-            var variable = node.right.left.data
-            postHelper(node.right.right, n => {
-                if (n.data == variable) {
-                    n.obj.parent.tree.setCoord(n.obj.coord, node.left)
-                }
-            })
-            node.right.obj.parent.tree.setCoord(node.right.obj.coord.slice(0, -1), node.right.right)
-            return false
-        }
-        })
         stage.removeChild(expr)
-        tree = expr.tree
-        var newExpr = helperHelper(tree)
-        stage.addChild(newExpr)
-        newExpr.x = x - newExpr.rightmostFunction.x
-        newExpr.y = y - newExpr.rightmostFunction.y
+        var newExpr
+        console.log(iterations)
+        for (var i = 0; i < iterations; i++) {
+            console.log(expr.tree.copy())
+            postOrder(expr.tree, node => {if (node.data == "app" && node.right.data == "abs") { //for some reason this stops working with combinators
+                var variable = node.right.left.data
+                console.log(variable)
+                postHelper(node.right.right, n => {
+                    if (n.data == variable) {
+                        n.obj.parent.tree.setCoord(n.obj.coord, node.left)
+                    }
+                })
+                node.right.obj.parent.tree.setCoord(node.right.obj.coord.slice(0, -1), node.right.right)
+                return false
+            }
+            })
+            console.log(expr.tree.copy())
+            newExpr = helperHelper(expr.tree)
+            expr = newExpr
+        }
+
+        console.log(newExpr)
+        add(newExpr)
+        
+        // stage.removeChild(expr)
+        // var tree = expr.tree
+        // var newExpr = helperHelper(tree)
+        // stage.addChild(newExpr)
+        // newExpr.x = x - newExpr.rightmostFunction.x
+        // newExpr.y = y - newExpr.rightmostFunction.y
 
         stage.update()
     })
@@ -327,6 +386,6 @@ function init() {
 }
 
 const colorList = ["red", "orange", "yellow", "lime", "olive", "green", "teal", "navy", "cyan", "blue", "purple", "magenta", "maroon", "gray", "silver", "tan"]
-var unusedColors = colorList
+var unusedColors = [...colorList]
 
 window.onload = init

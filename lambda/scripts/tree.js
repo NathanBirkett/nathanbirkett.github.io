@@ -41,7 +41,7 @@ class TreeNode {
         var right = null
         if (this.left != null) left = this.left.copy()
         if (this.right != null) right = this.right.copy()
-        return new TreeNode((" " + this.data).slice(1), left, right, {...this.obj})
+        return new TreeNode((" " + this.data).slice(1), left, right, _.cloneDeep(this.obj))
     }
 }
 
@@ -67,4 +67,20 @@ function inOrder(node, func) {
     var r = func(node)
     inOrder(node.right, func)
     return r
+}
+
+var rRun = true
+function reversePostOrder(node, func) {
+    rRun = true
+    reversePostHelper(node, func)
+}
+
+function reversePostHelper(node, func) {
+    if (rRun === false) return 
+    if (node == null) return
+    reversePostHelper(node.right, func)
+    reversePostHelper(node.left, func)
+    var res = func(node)
+    if (res === false) rRun = false
+    return res
 }

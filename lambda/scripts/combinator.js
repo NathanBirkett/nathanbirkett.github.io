@@ -12,7 +12,7 @@ class Combinator extends createjs.Container {
         this.width = width
         this.height = height
 
-        const inputs = Array(nInputs)
+        const inputs = Array()
         this.inputs = inputs
         this.fillCommands = []
 
@@ -28,7 +28,8 @@ class Combinator extends createjs.Container {
         // rect.graphics.beginFill("lightgreen").drawRect(0, 0, width, height)
         // this.addChild(rect)
         var body = new createjs.Shape()
-        body.graphics.beginFill("lightgreen").beginStroke().moveTo(0, 0).lineTo(this.width, 0).lineTo(this.width, 25).lineTo(this.width / 2 + 25, 50).lineTo(this.width / 2 - 25, 50).lineTo(0, 25).lineTo(0, 0)
+        // body.graphics.beginFill("lightgreen").beginStroke().moveTo(0, 0).lineTo(this.width, 0).lineTo(this.width, 25).lineTo(this.width / 2 + 25, 50).lineTo(this.width / 2 - 25, 50).lineTo(0, 25).lineTo(0, 0)
+        body.graphics.beginFill("lightgreen").beginStroke().moveTo(0, 0).lineTo(this.width, 0).lineTo(this.width, 50).lineTo(this.width - 50, 50).lineTo(0, 25).lineTo(0, 0)
         this.addChild(body)
 
         var newOutput = new createjs.Shape()
@@ -77,11 +78,13 @@ class CombinatorViewer extends createjs.Container {
         this.on("mousedown", e => {
             var expr = new Expression(stage)
             var newComb = this.comb.copy()
+            console.log(newComb.tree)
             expr.addChild(newComb)
+            expr.tree = new TreeNode(newComb.name, null, null, newComb)
             stage.addChild(expr)
             expr.x = window.innerWidth / 2;
             expr.y = window.innerHeight / 2;
-            expr.rightmostFunction = comb
+            expr.rightmostFunction = newComb
             stage.setChildIndex(expr, stage.numChildren - 1)
             stage.update()
         })
