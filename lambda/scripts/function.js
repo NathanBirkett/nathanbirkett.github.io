@@ -9,10 +9,23 @@ class Function extends createjs.Container {
         this.rectFillCommand = rect.graphics.beginFill(color).command
         rect.graphics.drawRect(0, 0, 50, 50)
         rect.on("dblclick", () => {
-            rectColorIndex = (rectColorIndex + 1) % stage.usedColors.length
+            // rectColorIndex = (rectColorIndex + 1) % (stage.usedColors.length + 1)
+            rectColorIndex++
+            console.log(rectColorIndex)
+            var reset = false
+            if (rectColorIndex == stage.usedColors.length) {
+                stage.usedColors.push(unusedColors.shift())
+                reset = true
+            }
+            console.log(stage.usedColors)
+            console.log(unusedColors) //what happened to yellow
             this.rectFillCommand.style = stage.usedColors[rectColorIndex]
             this.color = stage.usedColors[rectColorIndex]
             this.parent.tree.getCoord(this.coord).data = this.color
+            if (reset) {
+                rectColorIndex = -1
+            }
+            console.log(rectColorIndex)
             stage.update()
         })
         this.addChild(rect)

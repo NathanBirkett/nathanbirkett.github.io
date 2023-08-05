@@ -34,15 +34,17 @@ class Expression extends createjs.Container {
     }
 
     pressMove(e) {
-        if (!(this.parent instanceof Expression)) {
-            var detector = new createjs.Shape()
+        if (!(this.parent instanceof Expression) && !(this.parent.parent instanceof Expression)) {
+            // var detector = new createjs.Shape()
             var rightmostX = this.rightmostFunction.x
             this.rightmostY = this.rightmostFunction.y
             if (this.rightmostFunction instanceof Combinator) {
                 rightmostX = this.rightmostFunction.width - 50
             }
-            detector.setBounds(this.x + rightmostX, this.y + this.rightmostY+ 25, 50, 50)
-            var det = getObjectsInBounds(stage, detector).filter(i => (i instanceof Input || i instanceof CombinatorInput) && this.children[0] != i)
+            // detector.setBounds(this.x + rightmostX, this.y + this.rightmostY+ 25, 50, 50)
+            // var det = getObjectsInBounds(stage, detector).filter(i => (i instanceof Input || i instanceof CombinatorInput) && this.children[0] != i)
+            var det = getObjectsInCoords(this.x + rightmostX, this.y + this.rightmostY + 25, 50, 50)
+            det = det.filter(i => (i instanceof Input || i instanceof CombinatorInput) && this.children[0] != i)
             // console.log(det)
             if (det.length > 0) {
                 var parent = (det[0] instanceof CombinatorInput) ? det[0].parent.parent : det[0].parent
@@ -58,6 +60,9 @@ class Expression extends createjs.Container {
                 if (getItemsUnderPoint(stage, x, y).length == 0) {
                     console.log(det[0])
                     this.applyTo(det[0])
+                } else {
+                    this.x = e.stageX - this.clickX;
+                    this.y = e.stageY - this.clickY;
                 }
             } else {
                 this.x = e.stageX - this.clickX;
@@ -122,12 +127,22 @@ class Expression extends createjs.Container {
         })
         if (parent.tree.getCoord(applier.coord.slice(0, -1)).data == "abs") {
             var obj = parent.tree.getCoord(applier.coord.slice(0, -1)).obj
-            // if (parent.tree.getCoord(applier.coord).data == "app" && parent.tree.getCoord([...applier.coord, "r"]).obj.output != null) { //xor
-            //     obj = parent.tree.getCoord([...applier.coord, "r"]).obj
-            //     console.log(obj)
-            // }
+            if (parent.tree.getCoord(applier.coord).data == "app"
+            && parent.tree.getCoord([...applier.coord, "r"]).data == "app"
+            && parent.tree.getCoord([...applier.coord, "r"]).obj.output != null) { //xor?? maybe
+                obj = parent.tree.getCoord([...applier.coord, "r"]).obj
+                console.log(obj)
+            }
             var output = obj.output
             output.addLength(rightX)
+        }
+        if (applier instanceof CombinatorInput) {
+            console.log(rightX)
+            console.log(tRightX)
+            console.log(applier.comb.width) //yeah no vv
+            console.log(applier.parent.x)
+            console.log(this.rightmostFunction.x)
+            applier.comb.addLength(Math.max(this.rightmostFunction.x - applier.parent.x, 0), applier.comb.inputs.indexOf(applier))
         }
 
         parent.clickX = this.clickX + tRightX

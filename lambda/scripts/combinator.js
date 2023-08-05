@@ -27,23 +27,34 @@ class Combinator extends createjs.Container {
         // var rect = new createjs.Shape()
         // rect.graphics.beginFill("lightgreen").drawRect(0, 0, width, height)
         // this.addChild(rect)
-        var body = new createjs.Shape()
+        this.body = new createjs.Shape()
         // body.graphics.beginFill("lightgreen").beginStroke().moveTo(0, 0).lineTo(this.width, 0).lineTo(this.width, 25).lineTo(this.width / 2 + 25, 50).lineTo(this.width / 2 - 25, 50).lineTo(0, 25).lineTo(0, 0)
-        body.graphics.beginFill("lightgreen").beginStroke().moveTo(0, 0).lineTo(this.width, 0).lineTo(this.width, 50).lineTo(this.width - 50, 50).lineTo(0, 25).lineTo(0, 0)
-        this.addChild(body)
+        this.body.graphics.beginFill("lightgreen").beginStroke().moveTo(0, 0).lineTo(this.width, 0).lineTo(this.width, 50).lineTo(this.width - 50, 50).lineTo(0, 25).lineTo(0, 0)
+        this.addChild(this.body)
 
-        var newOutput = new createjs.Shape()
-        this.newOutput = newOutput
-        newOutput.graphics.beginFill("red").drawRoundRect(width - 4, height / 2 - 4, 8, 8, 3)
-        newOutput.on("click", () => {this.onNewOutput("lightblue")})
-        this.addChild(newOutput)
+        this.newOutput = new createjs.Shape()
+        this.newOutput.graphics.beginFill("red").drawRoundRect(width - 4, height / 2 - 4, 8, 8, 3)
+        this.newOutput.on("click", () => {this.onNewOutput("lightblue")})
+        this.addChild(this.newOutput)
 
-        var text = new createjs.Text(name)
-        text.x = width / 2;
-        text.y = height / 2
-        text.textAlign = "center"
-        text.textBaseline = "middle"
-        this.addChild(text)
+        this.text = new createjs.Text(name)
+        this.text.x = width / 2;
+        this.text.y = height / 2
+        this.text.textAlign = "center"
+        this.text.textBaseline = "middle"
+        this.addChild(this.text)
+    }
+
+    addLength(length, input) {
+        this.width += length
+        this.body.graphics.clear().beginFill("lightgreen").beginStroke().moveTo(0, 0).lineTo(this.width, 0).lineTo(this.width, 50).lineTo(this.width - 50, 50).lineTo(0, 25).lineTo(0, 0)
+        this.text.x = this.width / 2
+        this.text.y = this.height / 2
+        this.newOutput.graphics.clear().beginFill("red").drawRoundRect(this.width - 4, this.height / 2 - 4, 8, 8, 3)
+        for (var i = input; i < this.nInputs; i++) {
+            this.inputs[i].x += length
+        }
+        stage.update()
     }
 
     onNewOutput(color) {

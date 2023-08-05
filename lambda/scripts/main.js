@@ -15,9 +15,32 @@ function getObjectsInBounds(stage, boxObj, highestLevel) {
         if (obj.parent == stage) return obj
         return r(obj.parent)
     }
-    for (let i = box.x; i < box.x + box.width; i += 10) {
-        for (let j = box.y; j < box.y + box.height; j += 10) {
+    for (let i = box.x; i < box.x + box.width; i += 20) {
+        for (let j = box.y; j < box.y + box.height; j += 20) {
             var under = [...new Set(stage.getObjectsUnderPoint(i, j).filter(k => k != boxObj && k != stage).map(k => {return highestLevel ? r(k) : k.parent}))].filter(k => k != boxObj)
+            if (under.length > 0) {
+                objects = objects.concat(under)
+            }
+        }
+    }
+    return [...new Set(objects)]
+}
+
+function getObjectsInCoords(x, y, width, height, highestLevel) {
+    if (highestLevel == null) highestLevel = false
+    var objects = []
+    function r(obj) {
+        if (obj.parent == stage) return obj
+        return r(obj.parent)
+    }
+    for (let i = x; i < x + width; i += 20) {
+        for (let j = y; j < y + height; j += 20) {
+            var under = [...new Set(
+                stage.getObjectsUnderPoint(i, j)
+                .filter(k => k != stage)
+                .map(k => {return highestLevel ? r(k) : k.parent})
+            )]
+            // .filter(k => k != boxObj)
             if (under.length > 0) {
                 objects = objects.concat(under)
             }
@@ -42,9 +65,19 @@ function replaceCombinators(tree, expr) {
             && n.obj.coord.length >= n.obj.nInputs
         ) {
             var full = true
-            for (var i = 1; i <= n.obj.nInputs; i++) {
+            for (var i = 1; i <= n.obj.nInputs; i++) { 
                 if (tree.getCoord(n.obj.coord.slice(0, -i)).data != "app") full = false
             }
+            console.log(full)
+            console.log(n.obj.coord)
+            console.log([...n.obj.coord.slice(0, -n.obj.nInputs), ...Array(n.obj.nInputs).fill("r")])
+            // if ([...n.obj.coord.slice(0, -n.obj.nInputs), ...Array(n.obj.nInputs).fill("r")] != n.obj.coord) full = false
+            for (var i = 0; i < n.obj.coord.length; i++) {
+                if (n.obj.coord[i] != [...n.obj.coord.slice(0, -n.obj.nInputs), ...Array(n.obj.nInputs).fill("r")][i]) {
+                    full = false
+                }
+            }
+            console.log(full)
             if (full) {
                 console.log(n.obj.coord)
                 tree.setCoord(n.obj.coord, n.obj.tree)
@@ -93,19 +126,24 @@ function parseHelper(tree) {
     } else if (tree.data == "app") {
         var left = parseHelper(tree.left)
         console.log(left)
-        add(left)
+        // add(left)
         var right = parseHelper(tree.right)
-        add(right)
-        if (colorList.includes(right.tree.data)) {
+        // add(right)
+        if (colorList.includes(right.tree.data.replace(/[0-9]/g, ''))) {
             right.children[0].onNewInput()
         }
         var applier
         if (right.tree.data == "abs") applier = right.tree.obj
         else if (right.tree.data == "app") {
-            if (right.tree.right.data != "abs") {
-                right.rightmostFunction.onNewOutput("lightblue") //maybe better way to find new output
-                right.rightmostFunction.onNewInput()
-                applier = right.rightmostFunction.input
+            if (right.tree.right.data != "abs") { 
+                if (!["abs", "app", ...colorList].includes(right.tree.right.data)) {
+                    console.log(right.rightmostFunction.inputs)
+                    applier = right.rightmostFunction.inputs[1] //woahoho there buster
+                } else {
+                    right.rightmostFunction.onNewOutput("lightblue")
+                    right.rightmostFunction.onNewInput()
+                    applier = right.rightmostFunction.input
+                }
             } else {
                 var coord = ["r"]
                 while (true) {
@@ -115,7 +153,7 @@ function parseHelper(tree) {
                 console.log(coord.slice(0, -1))
                 applier = right.tree.getCoord(coord.slice(0, -1)).obj
             }
-        } else if (!colorList.includes(right.tree.data)) {
+        } else if (!colorList.includes(right.tree.data.replace(/[0-9]/g, ''))) {
             console.log(right.tree.obj)
             applier = right.tree.obj.inputs[0]
         }
@@ -159,7 +197,7 @@ function parseTree(currObj, tree) {
 
 function newCombinator() {
     var name = document.getElementById("name").value.toUpperCase()
-    var inputs = document.getElementById("inputs").value
+    var inputs = parseInt(document.getElementById("inputs").value)
 
     var detected = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
     var expr = new Expression(stage)
@@ -216,7 +254,10 @@ function init() {
     stage.usedColors = []
 
     var addLambda = new Button("add lambda", () => {
-        var expression = new Expression(stage, unusedColors.shift())
+        var expression = new Expression(stage, "red")
+        console.log(unusedColors)
+        unusedColors.splice(unusedColors.indexOf("red"), 1)
+        console.log(unusedColors)
         stage.addChild(expression)
         expression.x = window.innerWidth / 2;
         expression.y = window.innerHeight / 2;
@@ -275,7 +316,9 @@ function init() {
     stage.addChild(betaReduce)
 
     var trash = new Button("trash", () => {
-        stage.removeChild(getObjectsInBounds(stage, stage.getChildByName("selectbox"))[0].parent)
+        var obj = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
+        console.log(obj)
+        stage.removeChild(obj)
         stage.update()
     })
     trash.x = 300
