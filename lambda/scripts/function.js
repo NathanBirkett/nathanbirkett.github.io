@@ -61,11 +61,13 @@ class Function extends createjs.Container {
 
     onChangeCombinator() {
         var comb = combinatorList[this.combIndex].copy()
+        this.comb = comb
         this.parent.addChild(comb)
         this.parent.tree.setCoord(this.coord, new TreeNode(comb.name, null, null, comb))
         comb.x = this.x
         comb.y = this.y
         this.combIndex = (this.combIndex + 1) % numCombinators
+        this.parent.removeChild(this)
         stage.update()
     }
 

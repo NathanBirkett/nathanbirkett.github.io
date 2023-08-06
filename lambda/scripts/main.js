@@ -167,6 +167,7 @@ function parseHelper(tree) {
         obj.x = 0
         obj.y = 0
         obj.coord = []
+        obj.inputs.forEach(i => {i.coord = obj.coord})
         console.log(obj)
         expr = new Expression(stage, tree.data, obj)
         console.log({...expr}.children)
@@ -175,24 +176,48 @@ function parseHelper(tree) {
 }
 
 function parseTree(currObj, tree) {
+    var inputIndex
+    console.log(tree)
+    console.log(currObj)
     if (tree == null) return tree
     else if (tree.data == "abs") {
         currObj.onNewInput()
         currObj.input.onDoubleClick(tree.left.data, tree.left.data)
         parseTree(currObj.input.parent.tree.getCoord(currObj.coord).right.obj, tree.right)
-    } else if (tree.data == "app") { //FIX THIS
-        currObj.setColor(tree.right.data)
-        currObj.onNewInput() // tree.right isn't used??
+    } else if (tree.data == "app") { //FIX THIS! ok im on it
         var left = parseHelper(tree.left)
-        left.applyTo(currObj.input)
+        var c = []
+        while (true) {
+            if (tree.getCoord(c).right == null) break
+            c = [...c, "r"]
+        }
+        if (tree.obj instanceof Combinator) {
+            for (var i = 0; i <= combinatorList.map(e => e.name).indexOf(tree.data); i++) {
+                currObj.onChangeCombinator()
+            }
+            inputIndex = 0
+        } else if (tree.getCoord(c).obj instanceof Combinator) {
+            var index = parseTree(currObj, tree.right)
+            left.applyTo(currObj.comb.inputs[index])
+            inputIndex++
+        } else {
+            currObj.setColor(tree.right.data)
+            currObj.onNewInput()
+            left.applyTo(currObj.input)
+        }
     } else if (colorList.includes(tree.data) || colorList.includes(tree.data.slice(0, -1))) {
         currObj.setColor(tree.data)
     } else {
+        console.log(combinatorList)
+        console.log(combinatorList.map(e => e.name))
+        console.log(tree.data)
         console.log(combinatorList.map(e => e.name).indexOf(tree.data))
         for (var i = 0; i <= combinatorList.map(e => e.name).indexOf(tree.data); i++) {
             currObj.onChangeCombinator()
         }
+        inputIndex = 0
     }
+    return inputIndex
 }
 
 function newCombinator() {

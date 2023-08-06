@@ -87,6 +87,7 @@ class CombinatorViewer extends createjs.Container {
         this.addChild(comb)
 
         this.on("mousedown", e => {
+            console.log("mousedown")
             var expr = new Expression(stage)
             var newComb = this.comb.copy()
             console.log(newComb.tree)

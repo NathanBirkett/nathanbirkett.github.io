@@ -80,6 +80,7 @@ class Expression extends createjs.Container {
         if (applier instanceof CombinatorInput) {
             x += applier.parent.x
             y += applier.parent.y
+            console.log(applier.coord === applier.parent.coord)
         }
         var parent = (applier instanceof CombinatorInput) ? applier.parent.parent : applier.parent
         if (applier.coord == null) applier.coord = [...applier.func.coord]
@@ -107,10 +108,11 @@ class Expression extends createjs.Container {
                 if (parent.tree.getCoord(coord.slice(0, -1)).data != "app" || parent.tree.getCoord(coord.slice(0, -1)).right != parent.tree.getCoord(coord)) break
                 coord = coord.slice(0, -1)
             }
+            console.log(coord) //the tree is different for comb vs func apps
             postOrder(parent.tree.getCoord([...coord]), n => {if (n.obj != null) n.obj.coord.unshift("r")})
             if (coord.length == 0) parent.tree = new TreeNode("app", this.tree, parent.tree, applier)
             else parent.tree.setCoord(coord, new TreeNode("app", this.tree, parent.tree.getCoord(coord), applier))
-            applier.coord = coord
+            if (!(applier instanceof CombinatorInput)) applier.coord = coord
             postOrder(parent.tree, n => {
                 if (n.obj != null && n.obj.newAdded && !(n.obj instanceof Output)) {
                     n.obj.coord.unshift("l")
@@ -136,7 +138,7 @@ class Expression extends createjs.Container {
             var output = obj.output
             output.addLength(rightX)
         }
-        if (applier instanceof CombinatorInput) {
+        if (applier instanceof CombinatorInput) { //future me: the problem is the combinator input coords aren't being updated with the combinator coords
             console.log(rightX)
             console.log(tRightX)
             console.log(applier.comb.width) //yeah no vv
@@ -150,6 +152,7 @@ class Expression extends createjs.Container {
         parent.x = this.x + tRightX
         parent.y = this.rightmostY - this.y
         stage.removeChild(this)
+
         return parent
     }
 
