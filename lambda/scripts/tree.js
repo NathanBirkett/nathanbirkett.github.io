@@ -69,6 +69,14 @@ function inOrder(node, func) {
     return r
 }
 
+function preOrder(node, func) {
+    if (node == null) return
+    var r = func(node)
+    preOrder(node.right, func)
+    preOrder(node.left, func)
+    return r
+}
+
 var rRun = true
 function reversePostOrder(node, func) {
     rRun = true

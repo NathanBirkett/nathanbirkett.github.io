@@ -128,6 +128,7 @@ function parseHelper(tree) {
         console.log(left)
         // add(left)
         var right = parseHelper(tree.right)
+        console.log(right)
         // add(right)
         if (colorList.includes(right.tree.data.replace(/[0-9]/g, ''))) {
             right.children[0].onNewInput()
@@ -178,7 +179,7 @@ function parseHelper(tree) {
 function parseTree(currObj, tree) {
     var inputIndex
     console.log(tree)
-    console.log(currObj)
+    console.log({...currObj})
     if (tree == null) return tree
     else if (tree.data == "abs") {
         currObj.onNewInput()
@@ -198,8 +199,10 @@ function parseTree(currObj, tree) {
             inputIndex = 0
         } else if (tree.getCoord(c).obj instanceof Combinator) {
             var index = parseTree(currObj, tree.right)
+            console.log(index)
+            console.log(currObj)
             left.applyTo(currObj.comb.inputs[index])
-            inputIndex++
+            inputIndex = index + 1
         } else {
             currObj.setColor(tree.right.data)
             currObj.onNewInput()
@@ -300,12 +303,13 @@ function init() {
 
     var betaReduce = new Button("\u03b2-reduce", () => {
         var expr = getObjectsInBounds(stage, stage.getChildByName("selectbox"), true)[0]
-        var iterations = Math.max(1, replaceCombinators(expr.tree, expr))
+        var iterations = (expr.tree.data == "app" && expr.tree.right.data == "abs") ? 1 : Math.max(1, replaceCombinators(expr.tree, expr))
         const x = expr.rightmostFunction.x + expr.x
         const y = expr.rightmostFunction.y + expr.y
         stage.removeChild(expr)
         var newExpr
         console.log(iterations)
+        // var iterated = 0;
         for (var i = 0; i < iterations; i++) {
             console.log(expr.tree.copy())
             postOrder(expr.tree, node => {if (node.data == "app" && node.right.data == "abs") { //for some reason this stops working with combinators
@@ -317,6 +321,7 @@ function init() {
                     }
                 })
                 node.right.obj.parent.tree.setCoord(node.right.obj.coord.slice(0, -1), node.right.right)
+                // iterated++
                 return false
             }
             })

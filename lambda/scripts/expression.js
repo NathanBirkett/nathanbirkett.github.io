@@ -2,7 +2,7 @@ class Expression extends createjs.Container {
     constructor(stage, color, obj) {
         super()
 
-        
+        this.inputColors = []
         this.clicked = false
         this.on("mousedown", e => {
             this.clickX = e.stageX - this.x
@@ -90,6 +90,10 @@ class Expression extends createjs.Container {
             this.removeChild(children[i])
             parent.addChild(children[i])
             children[i].newAdded = true
+            console.log(children[i])
+            // if (children[i] instanceof Combinator) {
+            //     children[i].x = 0
+            // }
             children[i].x += x - rightX
             children[i].y += y - 75
         }
@@ -103,8 +107,9 @@ class Expression extends createjs.Container {
                 } 
             })
         } else {
-            var coord = [...applier.func.coord]
+            var coord = (applier instanceof CombinatorInput) ? [...applier.coord] : [...applier.func.coord]
             while (true) {
+                console.log(parent.tree.getCoord(coord.slice(0, -1)).right != parent.tree.getCoord(coord))
                 if (parent.tree.getCoord(coord.slice(0, -1)).data != "app" || parent.tree.getCoord(coord.slice(0, -1)).right != parent.tree.getCoord(coord)) break
                 coord = coord.slice(0, -1)
             }
@@ -112,7 +117,8 @@ class Expression extends createjs.Container {
             postOrder(parent.tree.getCoord([...coord]), n => {if (n.obj != null) n.obj.coord.unshift("r")})
             if (coord.length == 0) parent.tree = new TreeNode("app", this.tree, parent.tree, applier)
             else parent.tree.setCoord(coord, new TreeNode("app", this.tree, parent.tree.getCoord(coord), applier))
-            if (!(applier instanceof CombinatorInput)) applier.coord = coord
+            // if (!(applier instanceof CombinatorInput))
+            applier.coord = coord
             postOrder(parent.tree, n => {
                 if (n.obj != null && n.obj.newAdded && !(n.obj instanceof Output)) {
                     n.obj.coord.unshift("l")
@@ -139,6 +145,7 @@ class Expression extends createjs.Container {
             output.addLength(rightX)
         }
         if (applier instanceof CombinatorInput) { //future me: the problem is the combinator input coords aren't being updated with the combinator coords
+            console.log(this.rightmostFunction.width)
             console.log(rightX)
             console.log(tRightX)
             console.log(applier.comb.width) //yeah no vv

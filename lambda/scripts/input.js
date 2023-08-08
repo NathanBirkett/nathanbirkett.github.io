@@ -12,6 +12,7 @@ class Input extends createjs.Container {
         this.x = x
         this.y = y
         polygon.graphics.beginStroke().moveTo(0, -25).lineTo(50, -25).lineTo(25 + 25/2, 0).lineTo(25 / 2, 0).lineTo(0, -25)
+        this.colorIndex = 0
         polygon.on("dblclick", () => {this.onDoubleClick()})
         this.addChild(polygon)
 
@@ -33,15 +34,18 @@ class Input extends createjs.Container {
         if (this.polyFillCommand.style == "lightblue") {
             if (!(["abs", "app"].includes(this.parent.tree.data))) {
                 this.color = this.func.color
+                this.parent.inputColors.push(this.color)
                 this.coord = []
                 this.isParameter = true
                 this.parent.tree = new TreeNode("abs", new TreeNode(this.color), this.parent.tree, this)
                 this.func.onNewOutput((newColor == null) ? this.color : newColor)
             } else {
                 if (myColor == null) {
-                    this.color = unusedColors.shift()
-                    stage.usedColors.push(this.color)
+                    console.log(this.parent)
+                    this.color = colorList[this.parent.inputColors.length]
+                    this.parent.inputColors.push(this.color)
                 } else this.color = myColor
+                console.log(this.color)
                 this.isParameter = true
                 this.coord = this.func.coord
                 this.parent.tree.setCoord(this.coord, new TreeNode("abs", new TreeNode(this.color), this.parent.tree.getCoord(this.coord), this))
@@ -50,11 +54,18 @@ class Input extends createjs.Container {
             }
             this.polyFillCommand.style = this.color
         } else {
-            unusedColors.unshift(this.polyFillCommand.style)
-            this.parent.usedColors.splice(this.parent.usedColors.indexOf(this.polyFillCommand.style), 1)
-            this.polyFillCommand.style = "lightblue"
-            this.addChild(newInput)
-            this.isParameter = false
+            this.colorIndex++
+            var reset = false
+            if (this.colorIndex == stage.usedColors.length) {
+                stage.usedColors.push(unusedColors.shift())
+                reset = true
+            }
+            this.color = stage.usedColors[this.colorIndex]
+            if (reset) {
+                this.colorIndex = -1
+            }
+            this.polyFillCommand.style = this.color
+            //todo actually change tree
         }
         stage.update()
     }
