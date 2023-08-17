@@ -6,8 +6,9 @@ class Combinator extends createjs.Container {
         this.tree = tree
         this.name = name
         this.func = this
+        this.combIndex = 0
 
-        var width = nInputs * (50 + 25) - 25
+        var width = Math.max(nInputs * (50 + 25) - 25, 50)
         var height = 50
         this.width = width
         this.height = height
@@ -37,12 +38,36 @@ class Combinator extends createjs.Container {
         this.newOutput.on("click", () => {this.onNewOutput("lightblue")})
         this.addChild(this.newOutput)
 
+        this.changeCombinator = new createjs.Shape()
+        this.changeCombinator.graphics.beginFill("red").drawRoundRect(-4, height / 2 - 4, 8, 8, 3)
+        this.changeCombinator.on("click", () => {this.onChangeCombinator()})
+        this.addChild(this.changeCombinator)
+
         this.text = new createjs.Text(name)
         this.text.x = width / 2;
         this.text.y = height / 2
         this.text.textAlign = "center"
         this.text.textBaseline = "middle"
         this.addChild(this.text)
+    }
+
+    onChangeCombinator() {
+        console.log(this.combIndex)
+        var comb = combinatorList[this.combIndex].copy()
+        comb.coord = this.coord
+        comb.inputs.forEach(i => {i.coord = comb.coord})
+        this.comb = comb
+        this.parent.addChild(comb)
+        this.parent.tree.setCoord(this.coord, new TreeNode(comb.name, null, null, comb))
+        comb.x = this.x
+        comb.y = this.y
+        console.log(numCombinators)
+        this.combIndex = (this.combIndex + 1) % numCombinators
+        comb.combIndex = this.combIndex
+        console.log(this.combIndex)
+        if (this.parent.rightmostFunction == this) this.parent.rightmostFunction = this.comb
+        this.parent.removeChild(this)
+        stage.update()
     }
 
     addLength(length, input) {

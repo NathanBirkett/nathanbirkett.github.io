@@ -61,7 +61,7 @@ class Function extends createjs.Container {
 
     onChangeCombinator() {
         var comb = combinatorList[this.combIndex].copy()
-        comb.width = comb.nInputs * (50 + 25) - 25
+        // comb.width = comb.nInputs * (50 + 25) - 25
         comb.coord = this.coord
         comb.inputs.forEach(i => {i.coord = comb.coord})
         this.comb = comb

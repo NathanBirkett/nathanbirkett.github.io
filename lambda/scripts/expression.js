@@ -133,7 +133,9 @@ class Expression extends createjs.Container {
                 e.newAdded = false
             }
         })
-        if (parent.tree.getCoord(applier.coord.slice(0, -1)).data == "abs") {
+        var prev = parent.tree.getCoord(applier.coord.slice(0, -1))
+        console.log(prev)
+        if (prev.data == "abs") {
             var obj = parent.tree.getCoord(applier.coord.slice(0, -1)).obj
             if (parent.tree.getCoord(applier.coord).data == "app"
             && parent.tree.getCoord([...applier.coord, "r"]).data == "app"
@@ -142,6 +144,7 @@ class Expression extends createjs.Container {
                 console.log(obj)
             }
             var output = obj.output
+            console.log(output)
             output.addLength(rightX)
         }
         if (applier instanceof CombinatorInput) { //future me: the problem is the combinator input coords aren't being updated with the combinator coords
@@ -153,6 +156,23 @@ class Expression extends createjs.Container {
             console.log(this.rightmostFunction.x)
             applier.comb.addLength(Math.max(this.rightmostFunction.x - applier.parent.x, 0), applier.comb.inputs.indexOf(applier))
         }
+
+        // for (var i = 0; i < 1; i++) {
+        //     parent.children.forEach(c => {
+        //         if (!c.newAdded && c instanceof Output) {
+        //             var x = parent.x + c.x + c.length + 20
+        //             var y = parent.y + c.y
+        //             // var sqr = new createjs.Shape()
+        //             // sqr.graphics.beginFill("blue").drawRect(x, y, 5, 5)
+        //             // stage.addChild(sqr)
+        //             console.log(getItemsUnderPoint(stage, x, y))
+        //             // if (getItemsUnderPoint(stage, x, y).length == 0) {
+        //                 c.addLength(75)
+        //             // }
+        //         }
+        //         c.newAdded = false
+        //     })
+        // }
 
         parent.clickX = this.clickX + tRightX
         parent.clickY = this.rightmostY - this.clickY

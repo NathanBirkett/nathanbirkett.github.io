@@ -41,9 +41,11 @@ class Input extends createjs.Container {
                 this.func.onNewOutput((newColor == null) ? this.color : newColor)
             } else {
                 if (myColor == null) {
-                    console.log(this.parent)
-                    this.color = colorList[this.parent.inputColors.length]
-                    this.parent.inputColors.push(this.color)
+                    this.color = this.func.color
+                    if (this.parent.inputColors.includes(this.color)) {
+                        this.color = colorList[this.parent.inputColors.length]
+                        this.parent.inputColors.push(this.color)
+                    }
                 } else this.color = myColor
                 console.log(this.color)
                 this.isParameter = true
