@@ -1,3 +1,4 @@
+/* overall stuff */
 html {
     scroll-behavior: smooth;
 }
@@ -22,7 +23,8 @@ a:hover {
 
 body {
     background: linear-gradient(to top, #B3641B, #40D8FF);
-    display: grid;
+    display: flex;
+    flex-direction: column;
     margin: 0;
 }
 
@@ -30,44 +32,25 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-.text {
-    height: calc(5em + 10vw);
-    position: relative;
-}
-
-.text h1 {
-    font-size: 5em;
-    margin: 0;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    bottom: 0;
-}
-
-.header {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
-
-.header ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to right, #0990B3, #FF9C40);
-}
-
-.header li {
-    padding: 16px;
-    display: inline-block;
-    font-size: 2em;
-}
-
 .main {
+    display: flex;
+    flex-direction: row;
+    margin: 2%;
+}
+
+.middle {
+    display: flex;
+    flex-direction: column;
+    /* margin: auto 5vw; */
+    width: 50vw;
+}
+
+/* title */
+.title {
     display: grid;
 }
 
-.main .words {
+.title .words {
     margin: auto;
     margin-top: 3vh;
     background: linear-gradient(to top left, #0990B3, #FF9C40);
@@ -76,77 +59,32 @@ body::-webkit-scrollbar {
     text-align: center;
 }
 
-.main h1 {
+.title h1 {
     font-size: 10em;
     margin: 0;
 }
 
-.main h2 {
+.title h2 {
     font-size: 2em;
     margin: 0;
 }
 
-.projects {
-    display: flex;
-    flex-direction: column;
+.btn {
+    display: none;
 }
 
-.projects .project_container {
-    display: flex;
-    flex-direction: column;
-    margin: 2vw 5vw 0 5vw;
-}
-
-.projects h2 {
-    margin: 1vw;
-    font-size: 3em;
-}
-
-.projects p {
-    margin: 1vw;
-    font-size: 1.5em;
-}
-
-.projects span {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-
-.projects img {
-    height: 25vh;
-    border-radius: 5vh;
-}
-
-.projects .project_pane {
-    position: relative;
-    background: linear-gradient(to top left, #0990B3, #FF9C40);
-    padding: 1vh;
-    margin: 2vh;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    border-radius: 5vh;
-    transition: 0.1s;
-}
-
-.projects .project_pane:hover {
-    transform: scale(1.05);
-    transition: 0.1s;
-}
-
+/* about me */
 .aboutme {
+    width: calc(25vw - 2vw);
     display: flex;
     flex-direction: column;
 }
 
 .aboutme .infopane_container {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    margin-top: 2vw;
+    /* margin-top: 2vw; */
 }
 
 .aboutme h2 {
@@ -182,9 +120,9 @@ body::-webkit-scrollbar {
 }
 
 .aboutme .infopane {
-    width: 25vw;
-    margin: 0 auto;
-    height: 75vh;
+    width: calc(25vw - 2vw);
+    margin: 0 0 1vw 0;
+    height: min-content;
     background: linear-gradient(to top left, #0990B3, #FF9C40);
     display: flex;
     flex-direction: column;
@@ -192,7 +130,7 @@ body::-webkit-scrollbar {
 }
 
 .aboutme .list {
-    margin: 0 2vw;
+    margin: 0 2vw 2vw 2vw;
     overflow-y: scroll;
 }
 
@@ -207,22 +145,115 @@ body::-webkit-scrollbar {
     margin: 1vh;
 }
 
+/* projects */
+
+.projects {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    border-radius: 5vh;
+    width: 40vw;
+    margin: 0 2.5vw;
+    padding: 2vw 2.5vw 0 2.5vw;
+}
+
+.projects .project_container {
+    display: flex;
+    flex-flow: row wrap;
+    height: min-content;
+
+}
+
+.projects .thumbnail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    float: left;
+    width: 12vw;
+    margin: 0 2vw;
+}
+
+.projects h2 {
+    margin: 1vw;
+    font-size: 3em;
+}
+
+.projects p {
+    margin: 1vw;
+    font-size: 1.5em;
+    display: none;
+}
+
+.projects span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.projects img {
+    width: 12vw;
+    border-radius: 5vh;
+    margin: 0 2vw;
+}
+
+.projects .project_pane {
+    position: relative;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    padding: 1vw;
+    margin: 1vw;
+    /* display: flex; */
+    align-items: center;
+    flex-direction: column;
+    border-radius: 5vh;
+    transition: 0.1s;
+    width: 16vw;
+    flex: auto auto 10px;
+    height: min-content;
+}
+
+.projects .project_pane:hover {
+    transform: scale(1.05);
+    transition: 0.1s;
+}
+
+.projects .btn:checked + label .project_pane p {
+    display: inline;
+}
+
+.projects .btn:checked + label .project_pane {
+    width: 36vw;
+}
+
+.projects .btn:checked + label img {
+    float: left
+}
+
+/* contacts */
 .contacts {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    width: calc(25vw - 2vw);
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    border-radius: 5vh;
+    padding-top: 2vw;
+    height: min-content;
 }
 
 .contacts h2 {
     margin: 0;
     text-align: center;
-    font-size: large;
+    font-size: 1rem;
 }
 
 .contacts .contact_container {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: flex;
+    flex-flow: row wrap;
+    height: min-content;
     justify-content: center;
     align-content: center;
     margin-top: 2vw;
@@ -230,10 +261,10 @@ body::-webkit-scrollbar {
 
 .contacts .contact {
     background: linear-gradient(to top left, #0990B3, #FF9C40);
-    width: 36vh;
-    height: 36vh;
+    width: 8vw;
+    height: 8vw;
     padding: 2vh;
-    border-radius: 10vh;
+    border-radius: 3vw;
     background-clip: content-box;
     position: relative;
     display: flex;
@@ -256,65 +287,22 @@ body::-webkit-scrollbar {
 }
 
 .contacts img {
-    max-width: 36vh;
-    max-height: 36vh;
-    width: auto;
-    height: 24vh;
-    margin: 0 2vh;
+    width: 10vh;
+    height: auto;
+    margin: 0 auto auto auto;
     margin-bottom: 1vh;
-    object-fit: contain;
 }
 
-@media only screen and (max-width: 1000px) {
-    .aboutme .infopane_container {
-        display: inline;
-    }
+.text {
+    /* height: calc(5em + 10vw); */
+    position: relative;
+}
 
-    .aboutme .infopane {
-        margin: 5vw auto;
-        width: 75%;
-        border-radius: 2vh;
-        height: auto;
-    }
-
-    .projects p {
-        display: none;
-    }
-
-    .projects .project_pane {
-        flex-direction: column;
-        width: 75%;
-        align-self: center;
-    }
-    
-    .projects img {
-        width: 100%;
-        height: auto;
-    }
-
-    .projects h2 {
-        font-size: 10vw;
-        text-align: center;
-    }
-
-    .main h1 {
-        font-size: 18vw;
-    }
-    
-    .main h2 {
-        font-size: 4vw;
-    }
-
-    .main .words {
-        width: 75%;
-        border-radius: 5vh;
-    }
-
-    .text h1 {
-        font-size: 10vw;
-    }
-
-    .header li {
-        font-size: 4vw;
-    }
+.text h1 {
+    font-size: 5em;
+    margin: 0;
+    /* position: absolute; */
+    text-align: center;
+    width: 100%;
+    bottom: 0;
 }
