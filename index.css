@@ -205,7 +205,6 @@ body::-webkit-scrollbar {
     background: linear-gradient(to top left, #0990B3, #FF9C40);
     padding: 1vw;
     margin: 1vw;
-    /* display: flex; */
     align-items: center;
     flex-direction: column;
     border-radius: 5vh;
@@ -243,6 +242,29 @@ body::-webkit-scrollbar {
 
 .projects .btn:checked + #showMore ~ label .project_pane {
     display: none;
+}
+
+/* papers */
+#papers .project_container {
+    display: block;
+    height: min-content;
+}
+
+#papers .project_pane {
+    width: auto;
+}
+
+#papers .project_pane:before, #papers .project_pane:after {
+    content: " ";
+    display: table;
+}
+
+#papers .project_pane:after {
+    clear: both
+}
+
+#papers img {
+    float: left
 }
 
 /* contacts */
