@@ -153,7 +153,7 @@ body::-webkit-scrollbar {
     background: linear-gradient(to top left, #0990B3, #FF9C40);
     border-radius: 5vh;
     width: 40vw;
-    margin: 0 2.5vw;
+    margin: 0 2.5vw 2.5vw 2.5vw;
     padding: 2vw 2.5vw 0 2.5vw;
 }
 
@@ -230,6 +230,19 @@ body::-webkit-scrollbar {
 
 .projects .btn:checked + label img {
     float: left
+}
+
+.projects #showMore {
+    width: 46vw;
+    text-align: center;
+}
+
+.projects .btn + #showMore h2 {
+    margin: 0;
+}
+
+.projects .btn:checked + #showMore ~ label .project_pane {
+    display: none;
 }
 
 /* contacts */
