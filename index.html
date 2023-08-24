@@ -20,27 +20,76 @@
         </div>
     </div>
     <div class="main">
-        <div class="contacts", id="contacts">
-            <div class="text"><h1>Contacts</h1></div>
-            <div class="contact_container">
-                <div class="contact">
-                    <a href="https://github.com/NathanBirkett" target="_blank"><span></span></a>
-                    <img src="/images/github.png" alt="github">
-                    <h2>@NathanBirkett</h2> 
+        <div class="left">
+            <div class="blog">
+                <div class="text"><h1>Blog</h1></div>
+                <div class="card">
+                    <input type="checkbox" id="readBtn1" class="btn">
+                    <label for="readBtn1" id="readMore"><h2>keep reading...</h2></label>
+                    <h2>THE LAMBDA CALCULUS AND GROUP THEORY</h2>
+                    <h5>Aug 22, 2023</h5>
+                    <div class="words">
+                        <p>
+                            I've been really getting into the lambda calculus, as you can probably tell by my last post.
+                            I want to do some research in this field, and I know a thing or two about group theory so I thought I could try to combine them in some way.
+                            Very briefly, group theory studies groups, which are like generalized symmetries.
+                            A group is a set (usually symmetries) and an operation (usually something like composition).
+                            This operation is required to be associative.
+                            By combining elements of the group with the operation, you should never be able to get something that isn't another element.
+                            There also must be an identity element where operating it with another element doesn't change it, and for each element there has to be an inverse element that gets you back to the identity.
+                            If your interested in learning about why this is useful, there are lots of resources available online.
+                        </p>
+                        <p>
+                            I'm wondering if there is some link between the lambda calculus and group theory.
+                            As far as I know, there isn't anything readily available online about this, so this is potentially new territory.
+                            If you've watched the video in my previous post, you might notice two almost-examples of groups in the lambda calculus: the Church booleans and Church numerals.
+                            Booleans are kind of like the integers mod 1, which is a cyclic group under addition mod 1.
+                            I have figured out that addition mod 1 can be represented as xor, and I found an encoding for it.
+                            The integers form an infinite group under addition, but the church numerals can only represent natural numbers.
+                            There is an encoding integers and integer addition available on the wikipedia article for the Church encoding, so you can form infinite groups with the lambda calculus.
+                            But these examples are very special.
+                            If you're given a set of any random lambda expressions, it almost certainly does not form a group under any operation.
+                            So what is it about the encodings for booleans and integers that make them groups?
+                            This is what I'm going to try to figure out.
+                        </p>
+                        <p>
+                            This has led me to the classification of finite simple groups, in which mathematicians have prooved all finite simple groups are members of just a few infinite families plus some others.
+                            Any finite group can be decomposed into simple groups, so they act kind of like prime numbers.
+                            If there is a way to represent all of these finite simple groups, then every finite group can be encoded in the lambda calculus.
+                            I already developed an encoding for any cyclic group, one of the infinite families, but the others are significantly more complex, and I don't understand them that well.
+                            But why is this interesting?
+                            Right now, I don't really know.
+                            I'm hoping to find some special property of certain lambda expressions that means they will form a group.
+                        </p>
+                        <p>
+                            The biggest barrier is that lambda expressions, like normal functions, are definitely not associative.
+                            It might be useful to research some families of associative functions first, or this project might lead me to find some of those.
+                            Another possibiliy may be in combinator calculi.
+                            Combinator calculi can encode any lambda expression in just a few combinators.
+                            An example is the SKI combinator calculus, which can encode any lambda expression in just 3 combinators.
+                            I've messed around with combining these into graphs that have some interesting properties, but they're definitely not associative so that might go in a completely different direction.
+                    
+                        </p>
+                        <p>
+                            -
+                        </p>
+                    </div>
                 </div>
-                <div class="contact">
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nathan.birkett@icsd.k12.ny.us" target="_blank"><span></span></a>
-                    <img src="/images/gmail.png" alt="gmail">
-                    <h2>nb22@icsd.k12.ny.us</h2>
-                </div>
-                <div class="contact">
-                    <img src="/images/discord.png" alt="discord">
-                    <h2>printerdpaper</h2>
-                </div>
-                <div class="contact">
-                    <a href="https://www.youtube.com/channel/UC6trCNiL34vfOinayzAO0FA" target="_blank"><span></span></a>
-                    <img src="/images/youtube.png" alt="youtube">
-                    <h2>PrinterdPaper</h2>
+                <div class="card">
+                    <input type="checkbox" id="readBtn2" class="btn">
+                    <label for="readBtn2" id="readMore"><h2>keep reading...</h2></label>
+                    <h2>THE LAMBDA CALCULUS</h2>
+                    <h5>Aug 18, 2023</h5>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/oEul2-sc9MQ?si=v-rFGaxsDPMO5nI5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <p>
+                        If you've used any functional programming languages like Haskell, you might know that they are based off of what's called the lambda calculus.
+                        The lambda calculus is a logical system only made up of function definitions and applications.
+                        It may suprise you to learn that this system can accomplish anything other languages can.
+                        How can that be? You'll have to watch the video to find out.
+                    </p>
+                    <p>
+                        -
+                    </p>
                 </div>
             </div>
         </div>
@@ -182,138 +231,164 @@
                 </div>
             </div>
         </div>
-        <div class="aboutme" id="aboutme">
-            <div class="infopane_container">
-                <div class="infopane">
-                    <h2>Skills</h2>
-                    <div class="list">
-                        <div class="item">
-                            <h3>html/css/js</h3>
-                            <p>The only experience I have is making this website</p>
-                        </div>
-                        <div class="item">
-                            <h3>Java & OOP</h3>
-                            <p>I have used java since 2020, and I concider myself intermediate</p>
-                        </div>
-                        <div class="item">
-                            <h3>Python</h3>
-                            <p>I have used Python in numerous projects</p>
-                        </div>
-                        
-                        <div class="item">
-                            <h3>Kotlin & Android</h3>
-                            <p>I made an android app that you can see in the Projects section</p>
-                        </div>
-                        <div class="item">
-                            <h3>GitHub</h3>
-                            <p>I am proficient with github and can work with a team</p>
-                        </div>
-                        <!-- <div class="item">
-                            <h3>Video editing & recording</h3>
-                            <p>I grew a YouTube channel to 300 subscribers in 6 months with OBS and Davinci Resolve</p>
-                        </div>
-                        <div class="item">
-                            <h3>3D modeling & drawings</h3>
-                            <p>I took a 1 year course and consider myself proficient</p>
-                        </div>
-                        <div class="item">
-                            <h3>CNC & G/M code</h3>
-                            <p>I am able to program cnc machines in G/M code by hand</p>
-                        </div>
-                        <div class="item">
-                            <h3>Vex and RobotC</h3>
-                            <p>I can program in RobotC and can use Vex EDR kits</p>
-                        </div> -->
-                        <div class="item">
-                            <h3>Minecraft mods & datapacks</h3>
-                            <p>I haven't made any serious mods but I have experience with forge and datapacks</p>
-                        </div>
+        <div class="right">
+            <div class="contacts", id="contacts">
+                <div class="text"><h1>Contacts</h1></div>
+                <div class="contact_container">
+                    <div class="contact">
+                        <a href="https://github.com/NathanBirkett" target="_blank"><span></span></a>
+                        <img src="/images/github.png" alt="github">
+                        <h2>@NathanBirkett</h2>
+                    </div>
+                    <div class="contact">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nathan.birkett@icsd.k12.ny.us" target="_blank"><span></span></a>
+                        <img src="/images/gmail.png" alt="gmail">
+                        <h2>nb22@icsd.k12.ny.us</h2>
+                    </div>
+                    <div class="contact">
+                        <img src="/images/discord.png" alt="discord">
+                        <h2>printerdpaper</h2>
+                    </div>
+                    <div class="contact">
+                        <a href="https://www.youtube.com/channel/UC6trCNiL34vfOinayzAO0FA" target="_blank"><span></span></a>
+                        <img src="/images/youtube.png" alt="youtube">
+                        <h2>PrinterdPaper</h2>
                     </div>
                 </div>
-                <div class="infopane">
-                    <h2>Classes</h2>
-                    <div class="list">
-                        <div class="item">
-                            <h3>Math</h3>
-                            <p>Algebra 1, H Geometry, Advanced H Algebra 2 BC, Advanced H Precalculus BC, AP Computer Science A, (AP Calculus BC, Math Seminar)</p>
-                        </div>
-                        <div class="item">
-                            <h3>Science</h3>
-                            <p>H Earth Science, H Biology, H Chemistry, AP Chemistry, (AP Physics C)</p>
-                        </div>
-                        <div class="item">
-                            <h3>Technology</h3>
-                            <p>H Design and Drawing for Production, H Computer Integrated Manufacturing, H Principles of Engineering</p>
-                        </div>
-                        <div class="item">
-                            <h3>German</h3>
-                            <p>H German 1, H German 2, H German 3</p>
-                        </div>
-                        <div class="item">
-                            <h3>History</h3>
-                            <p>H Global History 1, H Global History 2, AP US History, (Participation in Government, H Economics)</p>
-                        </div>
-                        <div class="item">
-                            <h3>Music</h3>
-                            <p>Concert Band, Wind Ensemble (2 years)</p>
-                        </div>
-                        <div class="item">
-                            <h3>English</h3>
-                            <p>H English 9, H English 10, H English 11, (English Digital Media)</p>
-                        </div>
-                        <div class="item">
-                            <h3>Physical Education</h3>
-                            <p>PE 9 Fall/Spring, PE 10 Fall/Spring, PE 11 Fall/Spring (PE 12 Fall/Spring, Health Education)</p>
+            </div>
+            <div class="aboutme" id="aboutme">
+                <div class="infopane_container">
+                    <div class="infopane">
+                        <h2>Skills</h2>
+                        <div class="list">
+                            <div class="item">
+                                <h3>html/css/js</h3>
+                                <p>The only experience I have is making this website</p>
+                            </div>
+                            <div class="item">
+                                <h3>Java & OOP</h3>
+                                <p>I have used java since 2020, and I concider myself intermediate</p>
+                            </div>
+                            <div class="item">
+                                <h3>Python</h3>
+                                <p>I have used Python in numerous projects</p>
+                            </div>
+            
+                            <div class="item">
+                                <h3>Kotlin & Android</h3>
+                                <p>I made an android app that you can see in the Projects section</p>
+                            </div>
+                            <div class="item">
+                                <h3>GitHub</h3>
+                                <p>I am proficient with github and can work with a team</p>
+                            </div>
+                            <!-- <div class="item">
+                                <h3>Video editing & recording</h3>
+                                <p>I grew a YouTube channel to 300 subscribers in 6 months with OBS and Davinci Resolve</p>
+                            </div>
+                            <div class="item">
+                                <h3>3D modeling & drawings</h3>
+                                <p>I took a 1 year course and consider myself proficient</p>
+                            </div>
+                            <div class="item">
+                                <h3>CNC & G/M code</h3>
+                                <p>I am able to program cnc machines in G/M code by hand</p>
+                            </div>
+                            <div class="item">
+                                <h3>Vex and RobotC</h3>
+                                <p>I can program in RobotC and can use Vex EDR kits</p>
+                            </div> -->
+                            <div class="item">
+                                <h3>Minecraft mods & datapacks</h3>
+                                <p>I haven't made any serious mods but I have experience with forge and datapacks</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="infopane">
-                    <h2>Hobbies</h2>
-                    <div class="list">
-                        <div class="item">
-                            <h3>Computer Science</h3>
-                            <p>I obviously have an interest in programming, and I am looking forward to learning more about computer science concepts</p>
+                    <div class="infopane">
+                        <h2>Classes</h2>
+                        <div class="list">
+                            <div class="item">
+                                <h3>Math</h3>
+                                <p>Algebra 1, H Geometry, Advanced H Algebra 2 BC, Advanced H Precalculus BC, AP Computer Science A, (AP Calculus BC, Math Seminar)</p>
+                            </div>
+                            <div class="item">
+                                <h3>Science</h3>
+                                <p>H Earth Science, H Biology, H Chemistry, AP Chemistry, (AP Physics C)</p>
+                            </div>
+                            <div class="item">
+                                <h3>Technology</h3>
+                                <p>H Design and Drawing for Production, H Computer Integrated Manufacturing, H Principles of Engineering</p>
+                            </div>
+                            <div class="item">
+                                <h3>German</h3>
+                                <p>H German 1, H German 2, H German 3</p>
+                            </div>
+                            <div class="item">
+                                <h3>History</h3>
+                                <p>H Global History 1, H Global History 2, AP US History, (Participation in Government, H Economics)</p>
+                            </div>
+                            <div class="item">
+                                <h3>Music</h3>
+                                <p>Concert Band, Wind Ensemble (2 years)</p>
+                            </div>
+                            <div class="item">
+                                <h3>English</h3>
+                                <p>H English 9, H English 10, H English 11, (English Digital Media)</p>
+                            </div>
+                            <div class="item">
+                                <h3>Physical Education</h3>
+                                <p>PE 9 Fall/Spring, PE 10 Fall/Spring, PE 11 Fall/Spring (PE 12 Fall/Spring, Health Education)</p>
+                            </div>
                         </div>
-                        <div class="item">
-                            <h3>Robotics</h3>
-                            <p>I have been programming head since 2022</p>
+                    </div>
+                    <div class="infopane">
+                        <h2>Hobbies</h2>
+                        <div class="list">
+                            <div class="item">
+                                <h3>Computer Science</h3>
+                                <p>I obviously have an interest in programming, and I am looking forward to learning more about computer science concepts</p>
+                            </div>
+                            <div class="item">
+                                <h3>Robotics</h3>
+                                <p>I have been programming head since 2022</p>
+                            </div>
+                            <div class="item">
+                                <h3>Oboe</h3>
+                                <p>I have played oboe in school bands since 2016 and got an A on a level 5 Nyssma solo, and am a double reeds section leader</p>
+                            </div>
+                            <div class="item">
+                                <h3>Math</h3>
+                                <p>I have always found math exiting and my fields of interest are always shifting</p>
+                            </div>
+                            <!-- <div class="item">
+                                <h3>Science</h3>
+                                <p>I am exited by chemistry outside of school, and have found particle physics intriguing for a long time</p>
+                            </div> -->
+                            <div class="item">
+                                <h3>Video Games</h3>
+                                <p>My favorites are Minecraft, Scrap Mechanic, and Don't Starve</p>
+                            </div>
+                            <div class="item">
+                                <h3>Anime</h3>
+                                <p>Death Note, Jujutsu Kaisen and Vinland Saga are the best animes fight me</p>
+                            </div>
+                            <div class="item">
+                                <h3>Geography</h3>
+                                <p>I memorized every country in the world, along with the flags and capitals</p>
+                            </div>
+                            <div class="item">
+                                <h3>Vietnamese</h3>
+                                <p>I am attempting to learn Vietnamese for a school trip to Vietnam next February</p>
+                            </div>
+                            <!-- <div class="item">
+                                <h3>Dungeons & Dragons</h3>
+                                <p>I am an active player in a dnd game with my friends</p>
+                            </div>
+                            <div class="item">
+                                <h3>Rubik's Cubes</h3>
+                                <p>my pb is about 15s, and I can solve every WCA puzzle, and have been to a competition</p>
+                            </div> -->
                         </div>
-                        <div class="item">
-                            <h3>Oboe</h3>
-                            <p>I have played oboe in school bands since 2016 and got an A on a level 5 Nyssma solo, and am a double reeds section leader</p>
-                        </div>
-                        <div class="item">
-                            <h3>Math</h3>
-                            <p>I have always found math exiting and my fields of interest are always shifting</p>
-                        </div>
-                        <!-- <div class="item">
-                            <h3>Science</h3>
-                            <p>I am exited by chemistry outside of school, and have found particle physics intriguing for a long time</p>
-                        </div> -->
-                        <div class="item">
-                            <h3>Video Games</h3>
-                            <p>My favorites are Minecraft, Scrap Mechanic, and Don't Starve</p>
-                        </div>
-                        <div class="item">
-                            <h3>Anime</h3>
-                            <p>Death Note, Jujutsu Kaisen and Vinland Saga are the best animes fight me</p>
-                        </div>
-                        <div class="item">
-                            <h3>Geography</h3>
-                            <p>I memorized every country in the world, along with the flags and capitals</p>
-                        </div>
-                        <div class="item">
-                            <h3>Vietnamese</h3>
-                            <p>I am attempting to learn Vietnamese for a school trip to Vietnam next February</p>
-                        </div>
-                        <!-- <div class="item">
-                            <h3>Dungeons & Dragons</h3>
-                            <p>I am an active player in a dnd game with my friends</p>
-                        </div>
-                        <div class="item">
-                            <h3>Rubik's Cubes</h3>
-                            <p>my pb is about 15s, and I can solve every WCA puzzle, and have been to a competition</p>
-                        </div> -->
                     </div>
                 </div>
             </div>

@@ -21,6 +21,20 @@ a:hover {
     transition: 0.25s;
 }
 
+.text {
+    /* height: calc(5em + 10vw); */
+    position: relative;
+}
+
+.text h1 {
+    font-size: 5em;
+    margin: 0;
+    /* position: absolute; */
+    text-align: center;
+    width: 100%;
+    bottom: 0;
+}
+
 body {
     background: linear-gradient(to top, #B3641B, #40D8FF);
     display: flex;
@@ -38,11 +52,22 @@ body::-webkit-scrollbar {
     margin: 2%;
 }
 
+.left {
+    display: flex;
+    flex-direction: column;
+    width: calc(40vw * 0.96);
+}
+
 .middle {
     display: flex;
     flex-direction: column;
-    /* margin: auto 5vw; */
-    width: 50vw;
+    width: calc(40vw * 0.96);
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
 }
 
 /* title */
@@ -75,7 +100,7 @@ body::-webkit-scrollbar {
 
 /* about me */
 .aboutme {
-    width: calc(25vw - 2vw);
+    /* width: calc(25vw - 2vw); */
     display: flex;
     flex-direction: column;
 }
@@ -84,7 +109,6 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* margin-top: 2vw; */
 }
 
 .aboutme h2 {
@@ -120,7 +144,7 @@ body::-webkit-scrollbar {
 }
 
 .aboutme .infopane {
-    width: calc(25vw - 2vw);
+    /* width: calc(25vw - 2vw); */
     margin: 0 0 1vw 0;
     height: min-content;
     background: linear-gradient(to top left, #0990B3, #FF9C40);
@@ -145,6 +169,63 @@ body::-webkit-scrollbar {
     margin: 1vh;
 }
 
+/* blog */
+
+.blog {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to top left, #0990B3, #FF9C40);
+    border-radius: 5vh;
+    margin: 0 1.25vw;
+    padding: 2vw 2.5vw 2.5vw 2.5vw;
+}
+
+.blog h2 {
+    margin: 0.5vw 0 0.5vw 0;
+    font-size: 2em;
+}
+
+.blog p {
+    margin: 1vw;
+    font-size: 1em;
+}
+
+.blog .words {
+    height: 20vh;
+    clip-path: inset(0);
+}
+
+.blog .card {
+    position: relative;
+    background: linear-gradient(to left, #0990B3, #FF9C40);
+    padding: 1vw;
+    margin: 1vw 0;
+    border-radius: 5vh;
+    height: min-content;
+    position: relative
+}
+
+.blog #readMore {
+    width: 94%;
+    height: 6vh;
+    background: linear-gradient(to left, #0990B3, #FF9C40);
+    opacity: 0.8;
+    float: top;
+    position: absolute;
+    bottom: 1vh;
+    z-index: 100;
+}
+
+.blog #readMore h2 {
+    text-align: center;
+    opacity: 1;
+}
+
+.blog .btn:checked ~ .words {
+    clip-path: none;
+    height: min-content;
+}
+
 /* projects */
 
 .projects {
@@ -152,8 +233,8 @@ body::-webkit-scrollbar {
     flex-direction: column;
     background: linear-gradient(to top left, #0990B3, #FF9C40);
     border-radius: 5vh;
-    width: 40vw;
-    margin: 0 2.5vw 2.5vw 2.5vw;
+    /* width: 40vw; */
+    margin: 0 1.25vw 2.5vw 1.25vw;
     padding: 2vw 2.5vw 0 2.5vw;
 }
 
@@ -164,19 +245,9 @@ body::-webkit-scrollbar {
 
 }
 
-.projects .thumbnail {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    float: left;
-    width: 12vw;
-    margin: 0 2vw;
-}
-
 .projects h2 {
-    margin: 1vw;
-    font-size: 3em;
+    margin: 0.5vw 0 0.5vw 0;
+    font-size: 2em;
 }
 
 .projects p {
@@ -195,9 +266,10 @@ body::-webkit-scrollbar {
 }
 
 .projects img {
-    width: 12vw;
+    width: 8vw;
     border-radius: 5vh;
-    margin: 0 2vw;
+    display: block;
+    margin: 0 auto;
 }
 
 .projects .project_pane {
@@ -205,12 +277,9 @@ body::-webkit-scrollbar {
     background: linear-gradient(to top left, #0990B3, #FF9C40);
     padding: 1vw;
     margin: 1vw;
-    align-items: center;
-    flex-direction: column;
     border-radius: 5vh;
     transition: 0.1s;
-    width: 16vw;
-    flex: auto auto 10px;
+    width: 10vw;
     height: min-content;
 }
 
@@ -224,7 +293,7 @@ body::-webkit-scrollbar {
 }
 
 .projects .btn:checked + label .project_pane {
-    width: 36vw;
+    width: 23.5vw;
 }
 
 .projects .btn:checked + label img {
@@ -240,7 +309,7 @@ body::-webkit-scrollbar {
     margin: 0;
 }
 
-.projects .btn:checked + #showMore ~ label .project_pane {
+.projects .btn:not(:checked) + #showMore ~ label .project_pane {
     display: none;
 }
 
@@ -271,7 +340,7 @@ body::-webkit-scrollbar {
 .contacts {
     display: flex;
     flex-direction: column;
-    width: calc(25vw - 2vw);
+    /* width: calc(25vw - 2vw); */
     background: linear-gradient(to top left, #0990B3, #FF9C40);
     border-radius: 5vh;
     padding-top: 2vw;
@@ -296,8 +365,8 @@ body::-webkit-scrollbar {
 
 .contacts .contact {
     background: linear-gradient(to top left, #0990B3, #FF9C40);
-    width: 8vw;
-    height: 8vw;
+    width: 6vw;
+    height: 6vw;
     padding: 2vh;
     border-radius: 3vw;
     background-clip: content-box;
@@ -322,22 +391,8 @@ body::-webkit-scrollbar {
 }
 
 .contacts img {
-    width: 10vh;
+    width: 4vw;
     height: auto;
     margin: 0 auto auto auto;
     margin-bottom: 1vh;
-}
-
-.text {
-    /* height: calc(5em + 10vw); */
-    position: relative;
-}
-
-.text h1 {
-    font-size: 5em;
-    margin: 0;
-    /* position: absolute; */
-    text-align: center;
-    width: 100%;
-    bottom: 0;
 }
